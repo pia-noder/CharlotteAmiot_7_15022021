@@ -1,6 +1,6 @@
 <template>
   <div class="connection">
-    <img src="@/assets/icon-above-font.svg" alt="logo Groupomania">
+    <img class="logo-connexion" src="@/assets/icon-above-font.svg" alt="logo Groupomania">
 
     <div class="bloc-connexion" v-if="state === 'default'">
         <div class="bloc-logIn">
@@ -49,7 +49,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 
-img{
+.logo-connexion{
     width: 42%;
 }
 .connection{

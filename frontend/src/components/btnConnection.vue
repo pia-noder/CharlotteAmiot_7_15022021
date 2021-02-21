@@ -13,7 +13,7 @@ export default {
 
 <style>
     button {
-        background: linear-gradient(270deg, rgba(229, 115, 155, 0.9), rgba(229, 115, 155, 0.3));
+        background: linear-gradient(270deg, rgba(229, 115, 155) 30%, rgba(229, 115, 155, 0.3));
         font-size: 24px;
         padding: 20px 47px;
         border-radius: 27px;
