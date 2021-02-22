@@ -6,6 +6,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+///import vuelidate library
+import vuelidate from 'vuelidate'
+Vue.use(vuelidate)
+
 import router from './router'
 
 library.add(faSearch)

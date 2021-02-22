@@ -2,51 +2,71 @@
   <div class="connection">
     <img class="logo-connexion" src="@/assets/icon-above-font.svg" alt="logo Groupomania">
 
-    <div class="bloc-connexion" v-if="state === 'default'">
-        <div class="bloc-logIn">
-            <input type="text" placeholder="User ou email">
-            <input type="text" placeholder="mot de passe">
+    <div class="bloc-connexion">
+        <form class="bloc-logIn" @submit.prevent="onSubmitLogIn" novalidate >
+            <input v-model="email"  type="text" placeholder="email" @blur="$v.email.$touch()">
+            <div class="div" v-if="$v.email.$error">
+                <p v-if="!$v.email.required">Remplir bleu le champ</p>
+                <p v-if="!$v.email.email">Rentrer une addresse email valide</p>
+            </div>
+            <input v-model="password" type="text" placeholder="mot de passe" @blur="$v.password.$touch()">
+            <div v-if="$v.password.$error">
+                <p class="errorDisplay" v-if="!$v.password.required">Remplir le champ</p>
+                <p class="errorDisplay" v-if="!$v.password.minLength || !$v.password.maxLength"> Rentrer entre 8 et 50 caractères</p>
+            </div>
             <a href="#">Mot de passe oublié ?</a>
-            <btnConnection />
-        </div>
-        <button v-on:click="changeStateToSignIn('SignIn')" class="btntoSignBloc">Incrivez-vous</button>
-    </div>
 
-    <div class="bloc-connexion" v-if="state === 'SignIn'">
-        <div class="bloc-SignIn" >
-        <input type="text" placeholder="Email">
-        <input type="text" placeholder="User ou email">
-        <input type="text" placeholder="mot de passe">
-        <input type="text" placeholder="mot de passe">
-        <btnConnection />
-    </div>
-        <p>vous avez déjà un compte ? <a v-on:click="changeStateToSignIn('default')" href="#" onclick="return false;">Connectez-vous</a></p>
-    </div>
-
-    
+            <button :disabled="$v.$invalid">Connexion</button>
+        </form>
+        <router-link to="/SignUp"> <button class="btntoSignBloc">Incrivez-vous</button></router-link>
+    </div>    
   </div>
 </template>
 <script>
-import btnConnection from '@/components/btnConnection.vue'
+
+import {
+        required,
+        email,
+        minLength,
+        maxLength
+        
+    } from "vuelidate/lib/validators";
+
 export default {
     name: 'logIn',
-    components:{
-        btnConnection,
-    },
     data() {
         return {
-             state: 'default',
+             email: '',
+             password:'',
+
+        }
+    },
+     validations: {
+   
+        email: { 
+            required, 
+            email 
+        }, // Matches this.contact.email
+        password: {
+            required, 
+            minLength: minLength (8),
+            maxLength: maxLength(50)
         }
     },
     methods: {
-        changeStateToSignIn (newState) {
-            this.state = newState;
+        onSubmitLogIn () {
+            this.$v.$touch();
+            if(!this.$v.$invalid)[
+                fetch('http://localhost:3000')
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+            ]
         }
     }
 }
 </script>
 
-<style>
+<style >
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 
 .logo-connexion{
@@ -106,4 +126,12 @@ p{
     background-color: #E57373;
     width: 100%;
 }
+
+button {
+        background: linear-gradient(270deg, rgba(229, 115, 155) 30%, rgba(229, 115, 155, 0.3));
+        font-size: 24px;
+        padding: 20px 47px;
+        border-radius: 27px;
+        border:none;
+    }
 </style>
