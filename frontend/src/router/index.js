@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Profil from '../views/Profil.vue'
 import LogIn from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
+import Notifications from '../views/Notifications.vue'
+import Newsletter from '../views/Newsletter.vue'
 
 
 
@@ -43,6 +45,18 @@ const routes = [
     name: 'SignUp',
     component: SignUp
   },
+
+  {
+    path: '/Notifications',
+    nom: 'Notifiations',
+    component: Notifications
+  },
+
+  {
+    path: '/Newsletter',
+    nom: Newsletter,
+    component: Newsletter
+  }
   
 
 ]

@@ -27,6 +27,8 @@ export default {
     .nav{
         display: flex;
         justify-content: space-around;
+        padding-bottom: 10px;
+        border-bottom: 2px solid black;
 
         font-family: 'Montserrat', sans-serif;
     }
@@ -47,8 +49,8 @@ export default {
         width: 100%;
         height: 20px;
 
-        background-color: rgba(229, 115, 155, 0.17);
-        border: solid 2px rgba(229, 115, 155);
+        background-color: rgba(229, 115, 115, 0.17);
+        border: solid 2px rgba(229, 115, 115);
         border-radius: 10px;
     }
     .icon-search{

@@ -28,9 +28,9 @@
                 <p class="errorDisplay" v-if="!$v.repeatPassword.sameAs">Mot de passe différente</p>
             </div>
 
-            <button type="submit" :disabled="$v.$invalid">Valider</button>
+            <button class="btnSignIn" type="submit" :disabled="$v.$invalid">Valider</button>
         </form>
-        <p>vous avez déjà un compte ?<router-link to="/LogIn">Connectez-vous</router-link> </p>
+        <p class="linkToLogInPage">vous avez déjà un compte ?<router-link to="/LogIn"><br>Connectez-vous</router-link> </p>
     </div>
 
     
@@ -83,17 +83,22 @@ export default {
 }
 </script>
 
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+<style lang='scss'>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .logo-connexion{
-    width: 42%;
+    width: 30%;
+    min-width: 315px;
+    margin: auto;
 }
+    
 .connection{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    margin-bottom: 50px;
 
     font-family: 'Montserrat', sans-serif;
 }
@@ -104,6 +109,11 @@ export default {
     padding: 48px 35px 61px 35px;
     border: solid 2px #E57373;
     border-radius: 27px;
+}
+.bloc-SignIn {
+    .btnSignIn{
+        margin-top: 15px;
+    }
 }
 
 .bloc-logIn input{
@@ -139,7 +149,7 @@ p{
 }
 
 button {
-        background: linear-gradient(270deg, rgba(229, 115, 155) 30%, rgba(229, 115, 155, 0.3));
+        background: linear-gradient(270deg, rgb(229, 115, 115) 30%, rgba(229, 115, 155, 0.3));
         font-size: 24px;
         padding: 20px 47px;
         border-radius: 27px;
@@ -148,4 +158,10 @@ button {
 .errorDisplay {
     font-size: 10px;
 }
+
+.linkToLogInPage{
+    margin-top: 10px;
+    text-align: center;
+}
+
 </style>
