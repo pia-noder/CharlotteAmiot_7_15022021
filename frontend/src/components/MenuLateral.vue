@@ -21,6 +21,8 @@ export default {
     display: flex;
     flex-direction: column;
 
+    margin-top: 95px;
+
     .link {
         margin-left: 25%;
         font-size: 1.5rem;

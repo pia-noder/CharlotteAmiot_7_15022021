@@ -39,14 +39,16 @@ export default {
         
         flex: 1;
         
+        
       }
       .publication {
         flex: 3;
         
         margin-top: 30px;
+        margin-left: 1.5%;
 
         .bloc-post {
-          width: 60%;
+          width: 50%;
         }
       }
 }

@@ -6,7 +6,7 @@
         <form class="bloc-logIn" @submit.prevent="onSubmitLogIn" novalidate >
             <input v-model="email"  type="text" placeholder="email" @blur="$v.email.$touch()">
             <div class="div" v-if="$v.email.$error">
-                <p v-if="!$v.email.required">Remplir bleu le champ</p>
+                <p v-if="!$v.email.required">Remplir le champ</p>
                 <p v-if="!$v.email.email">Rentrer une addresse email valide</p>
             </div>
             <input v-model="password" type="text" placeholder="mot de passe" @blur="$v.password.$touch()">
@@ -16,11 +16,17 @@
             </div>
             <a href="#">Mot de passe oublié ?</a>
 
-            <button :disabled="$v.$invalid">Connexion</button>
+            <BtnConnection :disabled="$v.$invalid" title="connexion"></BtnConnection>
+
+           
         </form>
-        <router-link to="/SignUp"> <button class="btntoSignBloc">Incrivez-vous</button></router-link>
-    </div>    
+        <router-link to="/SignUp">
+            <BtnConnection  title="Inscrivez-vous"></BtnConnection>
+         </router-link>
+    </div>  
+
   </div>
+
 </template>
 <script>
 
@@ -30,10 +36,17 @@ import {
         minLength,
         maxLength
         
-    } from "vuelidate/lib/validators";
+    } from "vuelidate/lib/validators"
+
+import BtnConnection from '@/components/BtnConnection.vue'
 
 export default {
     name: 'logIn',
+
+    components: {
+        BtnConnection,
+    },
+    
     data() {
         return {
              email: '',
@@ -56,11 +69,11 @@ export default {
     methods: {
         onSubmitLogIn () {
             this.$v.$touch();
-            if(!this.$v.$invalid)[
+            if(!this.$v.$invalid){
                 fetch('http://localhost:3000')
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
-            ]
+            }
         }
     }
 }
@@ -105,6 +118,7 @@ export default {
     padding: 19px 22px
 }
 
+
 a{
     text-decoration: none;
     color: black;
@@ -112,9 +126,7 @@ a{
     margin: 20px 0 32px 0;
 }
 
-.btnValider{
-    margin-top: 20px;
-}
+
 
 p{
     font-weight: 700;
@@ -122,16 +134,10 @@ p{
 
 
 .btntoSignBloc{
-    margin-top: 48px;
+
     background-color: #E57373;
-    width: 100%;
+    border-radius: 20px;
+
 }
 
-button {
-        background: linear-gradient(270deg, rgba(229, 115, 155) 30%, rgba(229, 115, 155, 0.3));
-        font-size: 24px;
-        padding: 20px 47px;
-        border-radius: 27px;
-        border:none;
-    }
 </style>

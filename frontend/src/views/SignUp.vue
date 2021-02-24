@@ -28,7 +28,8 @@
                 <p class="errorDisplay" v-if="!$v.repeatPassword.sameAs">Mot de passe différente</p>
             </div>
 
-            <button class="btnSignIn" type="submit" :disabled="$v.$invalid">Valider</button>
+            <BtnConnection type="submit" :disabled="$v.$invalid" title="Validez"> </BtnConnection>
+
         </form>
         <p class="linkToLogInPage">vous avez déjà un compte ?<router-link to="/LogIn"><br>Connectez-vous</router-link> </p>
     </div>
@@ -40,10 +41,15 @@
 <script>
 
 import { required, minLength,  sameAs, email } from 'vuelidate/lib/validators'
+import BtnConnection from '@/components/BtnConnection.vue'
 
 export default {
   
     name: 'SignUp',
+    components: {
+        BtnConnection,
+    },
+
     data() {
         return {
             email: '',
@@ -110,12 +116,8 @@ export default {
     border: solid 2px #E57373;
     border-radius: 27px;
 }
-.bloc-SignIn {
-    .btnSignIn{
-        margin-top: 15px;
-    }
-}
 
+    
 .bloc-logIn input{
     font-size: 16px;
     background-color: #DDDCDC;
@@ -133,9 +135,6 @@ a{
     margin: 20px 0 32px 0;
 }
 
-.btnValider{
-    margin-top: 20px;
-}
 
 p{
     font-weight: 700;
@@ -148,13 +147,7 @@ p{
     width: 100%;
 }
 
-button {
-        background: linear-gradient(270deg, rgb(229, 115, 115) 30%, rgba(229, 115, 155, 0.3));
-        font-size: 24px;
-        padding: 20px 47px;
-        border-radius: 27px;
-        border:none;
-    }
+
 .errorDisplay {
     font-size: 10px;
 }

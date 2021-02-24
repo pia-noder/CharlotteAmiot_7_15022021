@@ -1,6 +1,6 @@
 <template>
   <div class='nav'>
-    <img src="@/assets/icon-left-font-monochrome-black.svg" alt="logo en noir et blanc de Groupomania">
+    <img class="imgLogoBlack" src="@/assets/icon-left-font-monochrome-black.svg" alt="logo en noir et blanc de Groupomania">
     <div class="search">
     <font-awesome-icon class="icon-search" icon="search" />
     <input class="searchBarre" type="text">  
@@ -33,7 +33,7 @@ export default {
         font-family: 'Montserrat', sans-serif;
     }
 
-    img{
+    .imgLogoBlack{
         width: 20%;
         margin-top: 36px;
         margin-left: 41px;
