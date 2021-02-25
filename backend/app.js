@@ -1,5 +1,6 @@
 const express = require('express');
-//const bodyParser = require('body-parser');
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
 //const helmet = require('helmet');
 //const rateLimit = require('express-rate-limit');
 
@@ -20,9 +21,24 @@ const app = express();
 });*/
 
 //Connexion à la BD
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'pia-noder',
+  password: '',
+  database: 'gropomania',
+});
+
+connection.connect( error => {
 
 
+  if(error){
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + connection.threadId);
+});
 
+connection.end();
 
 //Modifier les headers pour accepter les requêtes venant de tous les serveurs
 app.use((req, res, next) => {
@@ -36,8 +52,8 @@ app.use((req,res)=>{
     res.end('Server listening on port 3000')
 })
 
-/*app.use(bodyParser.json());
-app.use(helmet());
+app.use(bodyParser.json());
+/*app.use(helmet());
 
 //Enregistrement des routes
 app.use('/images',express.static(path.join(__dirname,'images')));*/
