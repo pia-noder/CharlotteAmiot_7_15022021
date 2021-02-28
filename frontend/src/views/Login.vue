@@ -4,12 +4,12 @@
 
     <div class="bloc-connexion">
         <form class="bloc-logIn" @submit.prevent="onSubmitLogIn" novalidate >
-            <input v-model="email"  type="text" placeholder="email" @blur="$v.email.$touch()">
+            <input v-model="email"  type="email" placeholder="email" @blur="$v.email.$touch()">
             <div class="div" v-if="$v.email.$error">
                 <p v-if="!$v.email.required">Remplir le champ</p>
                 <p v-if="!$v.email.email">Rentrer une addresse email valide</p>
             </div>
-            <input v-model="password" type="text" placeholder="mot de passe" @blur="$v.password.$touch()">
+            <input v-model="password" type="password" placeholder="mot de passe" @blur="$v.password.$touch()">
             <div v-if="$v.password.$error">
                 <p class="errorDisplay" v-if="!$v.password.required">Remplir le champ</p>
                 <p class="errorDisplay" v-if="!$v.password.minLength || !$v.password.maxLength"> Rentrer entre 8 et 50 caractères</p>

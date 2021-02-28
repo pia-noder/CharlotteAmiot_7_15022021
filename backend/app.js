@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+
 //const helmet = require('helmet');
 //const rateLimit = require('express-rate-limit');
 
@@ -21,7 +22,7 @@ const app = express();
 });*/
 
 //Connexion à la BD
-var connection = mysql.createConnection({
+/*var connection = mysql.createConnection({
   host: 'localhost',
   user: 'pia-noder',
   password: '',
@@ -38,7 +39,7 @@ connection.connect( error => {
   console.log('connected as id ' + connection.threadId);
 });
 
-connection.end();
+connection.end();*/
 
 //Modifier les headers pour accepter les requêtes venant de tous les serveurs
 app.use((req, res, next) => {
@@ -48,12 +49,18 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use((req,res)=>{
-    res.end('Server listening on port 3000')
-})
+
+  //importation des routes 
+  const userRoute = require('./routes/users');
+
+
 
 app.use(bodyParser.json());
+app.use('/auth', userRoute);
 /*app.use(helmet());
+
+
+
 
 //Enregistrement des routes
 app.use('/images',express.static(path.join(__dirname,'images')));*/

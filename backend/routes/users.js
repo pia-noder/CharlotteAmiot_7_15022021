@@ -5,14 +5,14 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 
 //importation des controllers
-const controllerUsers =  require ('../controllers/users');
+const controllerUsers =  require ('../controllers/user');
 
 //Création des routes pour envoyer les requêtes vers le controller concerné
 
 router.post('/signup', controllerUsers.signup);
-router.get('/login', controllerUsers.login);
+router.post('/login', controllerUsers.login);
 
-router.put('/:userId', auth, multer, controllerUsers.modifyOneUser);
-router.delete('/:userId', auth, controllerUsers.deleteOneUser)
+/*router.put('/:userId', auth, multer, controllerUsers.modifyOneUser);
+router.delete('/:userId', auth, controllerUsers.deleteOneUser)*/
 
 module.exports = router;

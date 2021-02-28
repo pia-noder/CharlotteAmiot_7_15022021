@@ -1,5 +1,6 @@
 <template>
   <div class="displayToPost">
+
       <div class="blocImg">
         <img class="imgProfile" src="@/assets/profile-user.png" alt="icon du profile"> 
       </div>
@@ -17,22 +18,20 @@
             </div>
       </div>
       <div class="btnPublier">
-        <DisplayOption></DisplayOption>
         <button @click="postPublication()">Publier</button>
       </div>
       <!--<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>-->
   </div>
-  
 </template>
 
+
 <script>
-import DisplayOption from '@/components/DisplayOption.vue'
 
 export default {
     nom: 'DisplayToPost',
     components: {
-        DisplayOption,
     },
+
     methods: {
         postPublication() {
             fetch('http://localhost:3000')

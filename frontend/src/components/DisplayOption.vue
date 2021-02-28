@@ -4,7 +4,7 @@
             <font-awesome-icon class="icon-search-trash" icon="trash-alt" />
             <p>Supprimer</p>
       </div>
-      <div class="modifiedOption">
+      <div class="modifyOption">
             <font-awesome-icon class="icon-search-exchange" icon="exchange-alt" />
             <p>Supprimer</p>
       </div>
@@ -17,6 +17,21 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
+    .displayOption{
+
+        padding: 5px;
+        box-shadow: 1px 2px 13px 5px rgba(0,0,0,0.45);
+
+        .deleteOption, .modifyOption {
+        display: flex;
+        padding: 3px;
+
+            p{
+                margin-left: 10px;
+            }
+        }
+    }
+    
 </style>
