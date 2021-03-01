@@ -46,24 +46,40 @@ exports.login = async (req, res, next) =>{
   try {
     //Récupérer le mot de passe associé à l'email dans la DB
     let user = await db.loginUser(req.body.email);
-    console.log(user);
+    console.log(user.password);
     //Comparer le mot de passe à celui fournit par l'utilisateur 
-      bcrypt.compare(req.body.password, results.password)
+      bcrypt.compare(req.body.password, user[0].password)
       .then( valid => {
         //Si c'est pas bon renvoyer un message d'erreur
         if(!valid){
           return res.status(400).json({message: 'mot de passe incorrect !'})
         }
-        
           return res.status(200).json({
-            message: 'mot de passe OK !'
+            userId: user[0].id,
+                token: jwt.sign(
+                  {userId: user[0].id},//pour être sûr que la requête correspond bien à cet userId
+                  'RANDOM_TOKEN_SECRET',
+                  {expiresIn: '1h'}
+                )
           })
       }).catch( error => res.status(400).json({ error }))
     
     
-    //Si c'est pas bon renvoyer un message d'erreur
   } catch (error) {
-    //console.log(error); Pour débugger
+    //console.log(error); //Pour débugger
     res.status(500).json({message:'Problème de formulaire'})
+  }
+}
+
+exports.getAllPosts = async ( req, res ) => {
+  try {
+    console.log(req.params.id);
+    let results = await db.getAllPosts(req.params.id);
+    resultsJSON = 
+    res.status(200).send(results[0]);
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error })
   }
 }

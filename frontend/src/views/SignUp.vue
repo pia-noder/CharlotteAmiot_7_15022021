@@ -20,14 +20,14 @@
             </div>
 
             <label for="password"></label>
-            <input id="password" type="text" v-model="password" placeholder="mot de passe" @blur="$v.password.$touch()">
+            <input id="password" type="password" v-model="password" placeholder="mot de passe" @blur="$v.password.$touch()">
             <div v-if="$v.password.$error">
                 <p class="errorDisplay" v-if="!$v.password.required">Entrer un password</p>
                 <p class="errorDisplay" v-if="!$v.password.minLength">Chosir un mot de passe avec au moins 8 caractères</p>
             </div>
 
             <label for="repeatPassword"></label>
-            <input id="repeatPassword" type="text" v-model="repeatPassword" placeholder="Répéter le mot de passe" @blur="$v.repeatPassword.$touch()">
+            <input id="repeatPassword" type="password" v-model="repeatPassword" placeholder="Répéter le mot de passe" @blur="$v.repeatPassword.$touch()">
             <div v-if="$v.repeatPassword.$error">
                 <p class="errorDisplay" v-if="!$v.repeatPassword.required">Remplir le champ</p>
                 <p class="errorDisplay" v-if="!$v.repeatPassword.sameAs">Mot de passe différente</p>
@@ -95,6 +95,9 @@ export default {
                 description: '',
                 imageURL: ''
             });
+            this.$router.push({
+                path: '/'
+            })
             console.log('Blue', response);
         }
     }

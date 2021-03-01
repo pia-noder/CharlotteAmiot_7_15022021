@@ -4,21 +4,38 @@ const mysql = require('mysql');
 const pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
-    user            : 'bob',
-    password        : 'secret',
+    user            : 'groupomania',
+    password        : 'GM21/02P7_',
     database        : 'groupomania',
-    port            :  3000
 });
 
 let groupomaniadb = {};
 
 //retourne toutes les fonctions vers la base de données
-groupomaniadb.allPosts =  () => {
+groupomaniadb.getAllPosts =  () => {
         return new Promise ((resolve, reject) => {
-            pool.query(`SELECT * FROM Posts`, (error, results, fields) => {
-
+            pool.query(`SELECT * FROM posts`, (error, results) => {
+                if(error){
+                    
+                    return reject(error);
+                }
+                    
+                    return resolve(results)
             });
         });
 };
+
+groupomaniadb.getOnePost = (id) => {
+    return new Promise ((resolve, reject) => {
+        pool.query(`SELECT * FROM posts WHERE id= ?`, [ id ] , (error, results) => {
+            if(error){
+                console.log('connexion DB pas OK !')
+                return reject(error);
+            }
+                console.log('connexion DB OK !')
+                return resolve(results);
+        });
+    });
+}
 
 module.exports = groupomaniadb;

@@ -28,9 +28,23 @@ groupomaniadb.createUser =  (username, email, password) => {
 
 groupomaniadb.loginUser = (email) => {
     return new Promise ((resolve, reject) => {
-        pool.query(`SELECT * FROM users WHERE email='?'` [email] , (error, results) => {
+        console.log(email);
+        pool.query(`SELECT * FROM users WHERE email= ? `, [email] , (error, results) => {
             if(error){
-                console.log('DB Post pas OK !')
+                
+                return reject(error);
+            }
+                
+                return resolve(results);
+        })
+    })
+}
+
+groupomaniadb.getAllPosts  = (id) => {
+    return new Promise ((resolve, reject) => {
+        pool.query(`SELECT * FROM Posts WHERE id_user = ?`, [ id ] , (error, results) => {
+            if(error){
+                console.log('DB Post pas OK !');
                 return reject(error);
             }
                 console.log('DB Post OK !')

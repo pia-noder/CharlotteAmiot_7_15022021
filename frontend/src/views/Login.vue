@@ -19,8 +19,10 @@
             </div>
             
             <a href="#">Mot de passe oublié ?</a>
-
+           
             <BtnConnection :disabled="$v.$invalid" title="connexion"></BtnConnection>
+            
+            
 
            
         </form>
@@ -33,7 +35,7 @@
 
 </template>
 <script>
-
+import serviceAuth from '@/service/ServiceAuthentification'
 import {
         required,
         email,
@@ -74,12 +76,15 @@ export default {
     methods: {
         async onSubmitLogIn () {
             //Appel de l'endpoint register auquel on passe email & password
-         /* const response = await  ServiceAuthentification.login({
+         const response = await  serviceAuth.login({
                 email: this.email,
                 password: this.password
             });
-            console.log(response.data)*/
-            console.log("envoie du formulaire login correctement déclenché")
+            this.$router.push({
+          path: '/'
+        })
+            console.log(response);
+           // console.log("envoie du formulaire login correctement déclenché")
         },
     }
 }

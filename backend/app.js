@@ -21,25 +21,6 @@ const app = express();
   max: 100 // limite chaque IP à 100 requête par windowMs
 });*/
 
-//Connexion à la BD
-/*var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'pia-noder',
-  password: '',
-  database: 'gropomania',
-});
-
-connection.connect( error => {
-
-
-  if(error){
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-  console.log('connected as id ' + connection.threadId);
-});
-
-connection.end();*/
 
 //Modifier les headers pour accepter les requêtes venant de tous les serveurs
 app.use((req, res, next) => {
@@ -52,14 +33,16 @@ app.use((req, res, next) => {
 
   //importation des routes 
   const userRoute = require('./routes/users');
+  const postsRoute = require('./routes/posts');
 
 
 
 app.use(bodyParser.json());
 app.use('/auth', userRoute);
+app.use('/posts', postsRoute);
 
 //bloc pour les tests de receptions des infos au niveau du backend
-/*app.use('/auth/signup', (req,res) => {
+/*app.use('/auth/login', (req,res) => {
   res.status(200).json(req.body);
   console.log('Envoie depuis front-logIn jusqu au serveur est OK')
 })*/
