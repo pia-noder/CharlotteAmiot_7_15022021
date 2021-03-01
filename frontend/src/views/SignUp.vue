@@ -5,24 +5,29 @@
 
     <div class="bloc-connexion">
         <form  class="bloc-SignIn" @submit.prevent="onSubmitRegisterForm" novalidate>
-            <input type="email" v-model="email" placeholder="Email" @blur="$v.email.$touch()">
+
+            <label for="email"></label>
+            <input id="email" type="email" v-model="email" placeholder="Email" @blur="$v.email.$touch()">
             <div v-if="$v.email.$error">
                 <p  class="errorDisplay" v-if="!$v.email.required">Entrer un email</p>
                 <p class="errorDisplay" v-if="!$v.email.email">Veuillez entrer un format d'email valide</p>
             </div>
             
-            <input type="text" v-model="username" placeholder="User" @blur="$v.username.$touch()">
+            <label for="username"></label>
+            <input id="username" type="text" v-model="username" placeholder="User" @blur="$v.username.$touch()">
             <div v-if="$v.username.$error">
                 <p class="errorDisplay" v-if="!$v.username.required">Entrer un nom d'utilisateur</p>
             </div>
 
-            <input type="text" v-model="password" placeholder="mot de passe" @blur="$v.password.$touch()">
+            <label for="password"></label>
+            <input id="password" type="text" v-model="password" placeholder="mot de passe" @blur="$v.password.$touch()">
             <div v-if="$v.password.$error">
                 <p class="errorDisplay" v-if="!$v.password.required">Entrer un password</p>
                 <p class="errorDisplay" v-if="!$v.password.minLength">Chosir un mot de passe avec au moins 8 caractères</p>
             </div>
 
-            <input type="text" v-model="repeatPassword" placeholder="Répéter le mot de passe" @blur="$v.repeatPassword.$touch()">
+            <label for="repeatPassword"></label>
+            <input id="repeatPassword" type="text" v-model="repeatPassword" placeholder="Répéter le mot de passe" @blur="$v.repeatPassword.$touch()">
             <div v-if="$v.repeatPassword.$error">
                 <p class="errorDisplay" v-if="!$v.repeatPassword.required">Remplir le champ</p>
                 <p class="errorDisplay" v-if="!$v.repeatPassword.sameAs">Mot de passe différente</p>
@@ -42,6 +47,7 @@
 
 import { required, minLength,  sameAs, email } from 'vuelidate/lib/validators'
 import BtnConnection from '@/components/BtnConnection.vue'
+import ServiceAuth from '@/service/ServiceAuthentification'
 
 export default {
   
@@ -58,6 +64,7 @@ export default {
             repeatPassword: '',  
         }
     },
+
     validations: {
         
          email: {
@@ -76,14 +83,19 @@ export default {
                 sameAs: sameAs('password')
         }
     },
+
     methods: {
-        onSubmitRegisterForm () {
-            this.$v.$touch();
-            if (!this.$v.$invalid){
-                fetch('http://localhost:3000')
-                .then(response => console.log(response))
-                .catch(error => console.log(error));
-            }
+       async onSubmitRegisterForm () {
+            console.log('Envoie du formulaire signIn correctement déclenché');
+            let response = await ServiceAuth.signup({
+                username: this.username,
+                email: this.email,
+                password: this.password,
+                poste: '',
+                description: '',
+                imageURL: ''
+            });
+            console.log('Blue', response);
         }
     }
 }

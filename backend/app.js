@@ -57,6 +57,13 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use('/auth', userRoute);
+
+//bloc pour les tests de receptions des infos au niveau du backend
+/*app.use('/auth/signup', (req,res) => {
+  res.status(200).json(req.body);
+  console.log('Envoie depuis front-logIn jusqu au serveur est OK')
+})*/
+
 /*app.use(helmet());
 
 

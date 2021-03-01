@@ -3,17 +3,21 @@
     <img class="logo-connexion" src="@/assets/icon-above-font.svg" alt="logo Groupomania">
 
     <div class="bloc-connexion">
+        
         <form class="bloc-logIn" @submit.prevent="onSubmitLogIn" novalidate >
+
             <input v-model="email"  type="email" placeholder="email" @blur="$v.email.$touch()">
             <div class="div" v-if="$v.email.$error">
                 <p v-if="!$v.email.required">Remplir le champ</p>
                 <p v-if="!$v.email.email">Rentrer une addresse email valide</p>
             </div>
+
             <input v-model="password" type="password" placeholder="mot de passe" @blur="$v.password.$touch()">
             <div v-if="$v.password.$error">
                 <p class="errorDisplay" v-if="!$v.password.required">Remplir le champ</p>
                 <p class="errorDisplay" v-if="!$v.password.minLength || !$v.password.maxLength"> Rentrer entre 8 et 50 caractères</p>
             </div>
+            
             <a href="#">Mot de passe oublié ?</a>
 
             <BtnConnection :disabled="$v.$invalid" title="connexion"></BtnConnection>
@@ -21,7 +25,7 @@
            
         </form>
         <router-link to="/SignUp">
-            <BtnConnection  title="Inscrivez-vous"></BtnConnection>
+            <BtnConnection title="Inscrivez-vous"></BtnConnection>
          </router-link>
     </div>  
 
@@ -39,6 +43,7 @@ import {
     } from "vuelidate/lib/validators"
 
 import BtnConnection from '@/components/BtnConnection.vue'
+
 
 export default {
     name: 'logIn',
@@ -59,7 +64,7 @@ export default {
         email: { 
             required, 
             email 
-        }, // Matches this.contact.email
+        }, 
         password: {
             required, 
             minLength: minLength (8),
@@ -67,14 +72,15 @@ export default {
         }
     },
     methods: {
-        onSubmitLogIn () {
-            this.$v.$touch();
-            if(!this.$v.$invalid){
-                fetch('http://localhost:3000')
-                .then(response => console.log(response))
-                .catch(error => console.log(error))
-            }
-        }
+        async onSubmitLogIn () {
+            //Appel de l'endpoint register auquel on passe email & password
+         /* const response = await  ServiceAuthentification.login({
+                email: this.email,
+                password: this.password
+            });
+            console.log(response.data)*/
+            console.log("envoie du formulaire login correctement déclenché")
+        },
     }
 }
 </script>
