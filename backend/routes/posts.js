@@ -16,9 +16,9 @@ const controllerPost = require ('../controllers/posts');
     res.status(200).json({message: 'data arrivé au fichier route'});
     console.log(req.data);
 })*/
-//router.post('/', auth, multer, controllerPost.createPost);
-router.get('/:id', controllerPost.getOnePost);
-router.get('/', controllerPost.getAllPosts);
+router.post('/', auth, multer, controllerPost.createPost);
+router.get('/:id', auth, controllerPost.getOnePost);
+router.get('/', auth, controllerPost.getAllPosts);
 /*router.modify('/:id', auth, controllerPost.modifyOnePost);
 router.delete('/:id', auth, controllerPost.deleteOnePost);
 router.delete('/:userId/posts', auth, controllerPost.deleteAllPosts);

@@ -5,7 +5,7 @@
       <router-link class="link" to="/Newsletter">Newsletter</router-link>
       <button class="btnModalPost" @click="openModal">Publier</button>
       <div id="modal">
-          <DisplayToPost class="modal-content" ></DisplayToPost>
+          <CreatePost class="modal-content" ></CreatePost>
       </div>
   </div>
 
@@ -14,22 +14,23 @@
 <script>
 
 window.onclick = function(event) {
+var modal = document.getElementById("modal");
   if (event.target == modal) {
     modal.style.display = "none";
   }
 }
 
 
-import DisplayToPost from '@/components/DisplayToPost.vue'
+import CreatePost from '@/components/CreatePost.vue'
 export default {
     nom: 'MenuLateral',
     components: {
-        DisplayToPost,
+        CreatePost,
     },
     methods: {
         openModal () {
             var modal = document.getElementById("modal");
-            modal.style.display = "block";
+           modal.style.display = "block";
         },
     },
 }

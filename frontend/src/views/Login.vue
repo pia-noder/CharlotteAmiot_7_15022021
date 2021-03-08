@@ -61,6 +61,7 @@ export default {
 
         }
     },
+
      validations: {
    
         email: { 
@@ -73,18 +74,28 @@ export default {
             maxLength: maxLength(50)
         }
     },
+
     methods: {
         async onSubmitLogIn () {
             //Appel de l'endpoint register auquel on passe email & password
          const response = await  serviceAuth.login({
                 email: this.email,
                 password: this.password
-            });
-            this.$router.push({
-          path: '/'
-        })
-            console.log(response);
+            })
+
+            if(response){
+                 
+                console.log(response);
+                localStorage.setItem('userToken', response.data.token)
+                localStorage.setItem('userID', response.data.userId)
+                this.$router.push({
+                    path: '/'
+                });
+            }
+             
+                
            // console.log("envoie du formulaire login correctement déclenché")
+                
         },
     }
 }

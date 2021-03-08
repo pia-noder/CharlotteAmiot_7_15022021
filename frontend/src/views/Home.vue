@@ -4,7 +4,8 @@
     <div class="main">
       <MenuLateral class="menuLateral" />
       <div class="publication">
-        <DisplayToPost class="bloc-post" />
+        <CreatePost class="bloc-post displayPost" />
+        <Post class="bloc-post post" />
       </div>
     </div>
     
@@ -16,14 +17,16 @@
 
 import Menu from '@/components/Menu.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
-import DisplayToPost from '@/components/DisplayToPost.vue'
+import CreatePost from '@/components/CreatePost.vue'
+import Post from '@/components/Posts.vue'
 
 export default {
   name: 'Home',
   components: {
     Menu,
     MenuLateral,
-    DisplayToPost
+    CreatePost,
+    Post,
   },
   
 }
@@ -49,6 +52,9 @@ export default {
 
         .bloc-post {
           width: 50%;
+        }
+        .post{
+          margin-top:23px;
         }
       }
 }

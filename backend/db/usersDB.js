@@ -28,13 +28,12 @@ groupomaniadb.createUser =  (username, email, password) => {
 
 groupomaniadb.loginUser = (email) => {
     return new Promise ((resolve, reject) => {
-        console.log(email);
         pool.query(`SELECT * FROM users WHERE email= ? `, [email] , (error, results) => {
             if(error){
-                
+                console.log('DB Post pas OK !');
                 return reject(error);
             }
-                
+                 console.log('DB Post OK !')
                 return resolve(results);
         })
     })

@@ -95,6 +95,8 @@ export default {
                 description: '',
                 imageURL: ''
             });
+            this.$store.dispatch('setToken',response.data.token);//modifier le state du fichier store
+            this.$store.dispatch('setUser', response.data.userId);
             this.$router.push({
                 path: '/'
             })

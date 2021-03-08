@@ -12,8 +12,8 @@ const { route } = require('./posts');
 router.post('/signup', controllerUsers.signup);
 router.post('/login', controllerUsers.login);
 
-/*Pour débugger
-router.post('/login', (req, res) => {
+//Pour débugger
+/*router.post('/login', (req, res) => {
     res.status(200).json({message :"Info du front envoyer jusqu au fichier router !"})
 })*/
 router.get('/:id/posts', controllerUsers.getAllPosts);

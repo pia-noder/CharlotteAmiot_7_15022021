@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const multer = require('./middleware/multer');
 
 //const helmet = require('helmet');
 //const rateLimit = require('express-rate-limit');
@@ -42,9 +43,10 @@ app.use('/auth', userRoute);
 app.use('/posts', postsRoute);
 
 //bloc pour les tests de receptions des infos au niveau du backend
-/*app.use('/auth/login', (req,res) => {
+/*app.use('/posts', multer, (req,res) => {
   res.status(200).json(req.body);
   console.log('Envoie depuis front-logIn jusqu au serveur est OK')
+  console.log(req.body);
 })*/
 
 /*app.use(helmet());

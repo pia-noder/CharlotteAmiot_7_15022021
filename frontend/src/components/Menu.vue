@@ -9,7 +9,7 @@
     <ul>
         <li><router-link to="/">Accueil</router-link></li>
         <li><router-link to="/profil">Profil</router-link></li>
-        <li><router-link to="/login">Déconnexion</router-link></li>
+        <li><router-link @click.native="logout" to="/login">Déconnexion</router-link></li>
     </ul>
   </div>
 </template>
@@ -19,6 +19,12 @@
 export default {
     name: 'Menu',
     
+    methods: {
+        logout(){
+           this.$store.dispatch('setToken', null);
+           this.$store.dispatch('setUser', null); 
+        }
+    }
 
 }
 </script>
