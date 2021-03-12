@@ -6,7 +6,7 @@
         </div>
         <div class="content">
             <slot>
-                No slot content defined !!!
+                
             </slot>
         </div>
 

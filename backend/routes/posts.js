@@ -12,16 +12,22 @@ const controllerPost = require ('../controllers/posts');
 
 //Création des routes pour envoyer les requêtes au controller concerné
 
-/*router.get('/', (req,res) => {
+/*router.post('/', (req,res) => {
     res.status(200).json({message: 'data arrivé au fichier route'});
     console.log(req.data);
 })*/
 router.post('/', auth, multer, controllerPost.createPost);
-router.get('/:id', auth, controllerPost.getOnePost);
+/*router.post('/',multer, (req, res) => {
+    console.log('Le fichier passe bien le middleware multer, aller vérifier si le fichier est dans le dossier multimedia')
+    console.log(req.file)
+    res.status(200);
+});*/
+router.get('/:id', auth,  controllerPost.getOnePost);
 router.get('/', auth, controllerPost.getAllPosts);
+router.delete('/:id', auth,  controllerPost.deleteOnePost);
 /*router.modify('/:id', auth, controllerPost.modifyOnePost);
-router.delete('/:id', auth, controllerPost.deleteOnePost);
 router.delete('/:userId/posts', auth, controllerPost.deleteAllPosts);
+
 
 router.post('/:postId/comments', auth, multer, controllerComments.createComment);
 router.get('/:postId/:comments/:Id', auth, controllerComments.getOnecomment);

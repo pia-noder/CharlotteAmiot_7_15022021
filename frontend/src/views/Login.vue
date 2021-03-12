@@ -85,9 +85,10 @@ export default {
 
             if(response){
                  
-                console.log(response);
+                //console.log(response);
                 localStorage.setItem('userToken', response.data.token)
                 localStorage.setItem('userID', response.data.userId)
+                localStorage.setItem('userData',JSON.stringify(response.data.user))
                 this.$router.push({
                     path: '/'
                 });

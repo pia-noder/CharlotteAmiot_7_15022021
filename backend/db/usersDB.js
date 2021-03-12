@@ -13,9 +13,9 @@ const pool = mysql.createPool({
 let groupomaniadb = {};
 
 //retourne toutes les fonctions vers la base de données
-groupomaniadb.createUser =  (username, email, password) => {
+groupomaniadb.createUser =  (username, email, password, imageURL) => {
     return new Promise ((resolve, reject) => {
-        pool.query(`INSERT INTO users (id, username, email, password, poste, description, imageURL) VALUES (0, ? ,?, ?, NULL, NULL, NULL)`, [username, email, password], (error, results) => {
+        pool.query(`INSERT INTO users (id, username, email, password, poste, description, imageURL) VALUES (0, ? ,?, ?, NULL, NULL, ?)`, [username, email, password , imageURL], (error, results) => {
             if(error){
                 //console.log('DB Post pas OK !')
                 return reject(error);

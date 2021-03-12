@@ -6,17 +6,17 @@ const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png',
-  'video/x-flv': 'flv',
+ /* 'video/x-flv': 'flv',
   'video/mp4': 'mp4',
   'video/x-msvideo': 'avi',
   'video/quicktime': 'mov',
-  'video/x-ms-wmv': 'wmv'
+  'video/x-ms-wmv': 'wmv'*/
 };
 
 //indication de l'endroit où enregistrer les fichiers entrants et sous quel nom
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'multimedia_file');
+    callback(null, 'multimedia');
   },
   filename: (req, file, callback) => {
     const name = file.originalname.split('.')[0];
@@ -25,4 +25,4 @@ const storage = multer.diskStorage({
   }
 });
 
-module.exports = multer({storage: storage}).single('multimedia_file');
+module.exports = multer({storage: storage}).single('multimedia');

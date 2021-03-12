@@ -26,8 +26,9 @@ exports.signup =  (req, res ) => {
     .then( hash =>{
       console.log(hash);
       console.log(req.body)
+      const defaultImg = 'http://localhost:3000/multimedia/profile-user.png';
       //envoie vers la DB
-      let results =  db.createUser(req.body.username, req.body.email, hash);
+      let results =  db.createUser(req.body.username, req.body.email, hash, defaultImg);
         res.status(201).json(results);
     })
     .catch( error => {
@@ -51,7 +52,7 @@ exports.login = async (req, res, next) =>{
     } 
  
     let user = await db.loginUser(req.body.email);
-    console.log(user.password);
+    console.log(user[0]);
     
       bcrypt.compare(req.body.password, user[0].password)
       .then( valid => {
@@ -61,7 +62,7 @@ exports.login = async (req, res, next) =>{
         }
           return res.status(200).json({
             userId: user[0].id,
-            username: user[0].username,
+            user: user[0],
             token: jwt.sign(
               {userId: user[0].id},//pour être sûr que la requête correspond bien à cet userId
               'RANDOM_TOKEN_SECRET',

@@ -6,7 +6,7 @@
     <main>
       <MenuLateral class="menuLateral" />
       <div class="blocProfil">
-        <h1>Page en construction</h1>
+        <DisplayProfil />
       </div>
     </main>
     
@@ -17,12 +17,14 @@
 <script>
 import Menu from '@/components/Menu.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
+import DisplayProfil from '@/components/DisplayProfil.vue'
 
 export default {
   nom: 'profil',
   components: {
     Menu,
-    MenuLateral
+    MenuLateral,
+    DisplayProfil
   },
 
 }

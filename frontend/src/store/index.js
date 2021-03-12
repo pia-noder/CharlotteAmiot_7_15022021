@@ -8,9 +8,8 @@ export default new Vuex.Store({
   state: {
     token: null,
     userId: null,
-    username:null,
+    isFormData: false,
     isUserLoggedIn: false,
-    postList: []
   },
   mutations: {
     SET_TOKEN( state, token ) {
@@ -25,10 +24,13 @@ export default new Vuex.Store({
     SET_ID( state, userId ) {
       state.userId = userId
     },
-    SET_USERNAME( state, username ) {
-      state.username = username
-    },
+    
+    SET_FORMDATA( state){
+
+      state.isFormData = true;
+    }
   },
+
   actions: {
     setToken( {commit}, token ) {
       commit('SET_TOKEN', token)
@@ -36,10 +38,11 @@ export default new Vuex.Store({
     setUser({commit}, userId) {
       commit('SET_ID', userId)
     },
-    setUsername({commit}, username) {
-      commit('SET_USERNAME', username)
+    setFormData({commit}) {
+      commit('SET_FORMDATA');
     }
   },
+
   modules: {
   }
 })

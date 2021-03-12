@@ -5,19 +5,18 @@
         <img class="imgProfile" src="@/assets/profile-user.png" alt="icon du profile"> 
       </div>
 
-      <form enctype="multipart/form-data" @submit.prevent="onSubmitPost" name="postData">
+      <form enctype="multipart/form-data" @submit.prevent="onSubmitPost">
         <div class="contenu">
-                <textarea v-model="contenu" name="story" rows="5" cols="50" placeholder='Text...'>
-                
-                </textarea>
+                <textarea v-model="postData.contenu"   rows="5" cols="50" placeholder='Text...'></textarea>
+
                 <input 
                 type="file" 
                 ref="file" 
-                name="file"
+                name="multimedia"
                 @change="onSelectFile" 
                 >
                 <h5>{{ message }}</h5>
-                <div class="chooseFile">
+                <div class="likeNComment">
                     <span class="icon-search-link"><font-awesome-icon  icon="link" /></span>
                     <span class="icon-search-heart"><font-awesome-icon  icon="heart" /></span>
                 </div>
@@ -42,7 +41,7 @@ export default {
             postData:{
                 date_publication:'',
                 contenu: '',
-                fileURL: ''
+                fileURL: null
             },
 
             message: ''
@@ -51,17 +50,29 @@ export default {
     },
 
     methods: {
-        onSelectFile () {
-            this.postData.fileURL = this.$refs.file.files[0];
+        onSelectFile (event) {
+            this.postData.fileURL = event.target.files[0];
         },
 
       async onSubmitPost () {
+            const userId = localStorage.getItem('userID');
+           //var myForm = document.forms.namedItem("postForm")
+            //let myForm = document.getElementById('postForm');
+            console.log(this.postData.fileURL);
             const formData = new FormData();
-            formData.append('file', this.postData.fileURL);
+         
             formData.append('contenu', this.postData.contenu);
+            formData.append('userId', userId);
+            formData.append('multimedia', this.postData.fileURL);
+            for(let fd of formData.entries()){
+                console.log(fd[0] + ' , ' + fd[1])
+            }
 
             try {
-                await ServicePosts.postOne(formData)
+
+                this.$store.dispatch('setFormData');
+
+                await ServicePosts.postOnePost(formData)
                 this.message = 'formData Uploaded !!!'
                 
             } catch (error) {

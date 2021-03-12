@@ -8,4 +8,8 @@ export default {
     login (infos) {
         return API().post('auth/login', infos);
     },
+
+    getOneUSer(){
+        return API().get('auth/user')
+    }
 };

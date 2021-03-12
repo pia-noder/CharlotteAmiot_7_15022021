@@ -11,6 +11,8 @@ import { faHeart} from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import { faExchangeAlt} from '@fortawesome/free-solid-svg-icons'
 import { faCommentDots} from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisH} from '@fortawesome/free-solid-svg-icons'
+
 
 /*  <span class="icon-search-images"><font-awesome-icon  icon="images" /></span>
     <span class="icon-search-video"><font-awesome-icon  icon="video" /></span>*/
@@ -24,7 +26,7 @@ Vue.use(vuelidate)
 import router from './router'
 import store from './store'
 
-library.add(faSearch, faImages, faVideo, faLink, faHeart, faTrashAlt, faExchangeAlt, faCommentDots)
+library.add(faSearch, faImages, faVideo, faLink, faHeart, faTrashAlt, faExchangeAlt, faCommentDots, faEllipsisH)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

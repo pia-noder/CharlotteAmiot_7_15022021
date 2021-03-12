@@ -3,24 +3,22 @@ import API from '@/service/APIClient';
 
 
 export default {
-    /*index (search) {
-        return API().get('songs', {
-            params: {
-              search: search
-            }
-        });
-    },*/
 
     getAllPosts (infos) {
        
         return API().get('posts', infos )
     },
 
-    getOnePost (infos) {
-        return API().get('posts/:id', infos)
+    getOnePost (id) {
+        
+        return API().get('posts/:id', id)
     },
 
-    postOne (data) {
-        return API().post('posts', data)
+    postOnePost (data) {
+        return API().post('posts', data )
+    },
+
+    deleteOnePost(id){
+        return API().delete('posts/:id', id)
     },
 }

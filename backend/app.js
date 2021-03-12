@@ -1,7 +1,8 @@
 const express = require('express');
 const mysql = require('mysql');
-const bodyParser = require('body-parser');
-const multer = require('./middleware/multer');
+//const bodyParser = require('body-parser');
+
+
 
 //const helmet = require('helmet');
 //const rateLimit = require('express-rate-limit');
@@ -12,8 +13,7 @@ const multer = require('./middleware/multer');
 const app = express();
 
 //Accès au chemin du notre système de fichiers
-//const path = require('path');
-
+const path = require('path');
 
 
 //Définir le nombre de requête par période
@@ -31,31 +31,29 @@ app.use((req, res, next) => {
     next();
   });
 
+//importation des routes 
+const userRoute = require('./routes/users');
+const postsRoute = require('./routes/posts');
+  
 
-  //importation des routes 
-  const userRoute = require('./routes/users');
-  const postsRoute = require('./routes/posts');
+//app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}))
 
+//Enregistrement des routes
+app.use('/multimedia',express.static(path.join(__dirname,'multimedia')));
 
-
-app.use(bodyParser.json());
 app.use('/auth', userRoute);
 app.use('/posts', postsRoute);
 
 //bloc pour les tests de receptions des infos au niveau du backend
-/*app.use('/posts', multer, (req,res) => {
+/*app.use('/posts', (req,res) => {
   res.status(200).json(req.body);
   console.log('Envoie depuis front-logIn jusqu au serveur est OK')
   console.log(req.body);
 })*/
 
-/*app.use(helmet());
-
-
-
-
-//Enregistrement des routes
-app.use('/images',express.static(path.join(__dirname,'images')));*/
+/*app.use(helmet());*/
 
 
 

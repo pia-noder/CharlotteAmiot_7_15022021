@@ -23,17 +23,26 @@ exports.getOnePost = async ( req,res ) => {
 };
 
 exports.createPost = async (req, res) => {
-
-    const postObject = JSON.parse(req.body.post);
-    delete postObject._id;
-    const sauce = {
-        ...sauceObject,
-        fileUrl: `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}`
-    };
+    console.log(req.body , req.file)
+    
+    const fileURL= `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}`;
+    
     try {
-        console.log(req)
-        const results = await db.createPost(sauce);
-        res.status(200).json({message: 'Post correctement créé'});
+        
+        const results = await db.createPost(req.body.contenu, req.body.userId, fileURL);
+        res.status(201).json({message: 'Post correctement créé'});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error })
+    }
+}
+
+
+
+exports.deleteOnePost = async (req, res) => {
+    try {
+        const results = await db.deleteOnePost(req.params.id);
+        res.status(200).json({message: 'Post correctement supprimé'})
     } catch (error) {
         console.log(error);
         res.status(500).json({ error })
