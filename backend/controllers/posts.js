@@ -23,10 +23,9 @@ exports.getOnePost = async ( req,res ) => {
 };
 
 exports.createPost = async (req, res) => {
-    console.log(req.body , req.file)
-    
-    const fileURL= `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}`;
-    
+
+    const fileURL = req.file ? `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}` : null;
+
     try {
         
         const results = await db.createPost(req.body.contenu, req.body.userId, fileURL);
@@ -41,7 +40,8 @@ exports.createPost = async (req, res) => {
 
 exports.deleteOnePost = async (req, res) => {
     try {
-        const results = await db.deleteOnePost(req.params.id);
+        console.log(req.body.id_post)
+        const results = await db.deleteOnePost(req.body.id_post);
         res.status(200).json({message: 'Post correctement supprimé'})
     } catch (error) {
         console.log(error);

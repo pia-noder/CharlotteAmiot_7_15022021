@@ -52,6 +52,7 @@ groupomaniadb.createPost = (contenu, user_id ,fileURL) => {
 }
 
 groupomaniadb.deleteOnePost = (id) => {
+    console.log(id)
     return new Promise ((resolve, reject) => {
         pool.query(`DELETE FROM posts WHERE id = ?`, [id], (error, results) => {
             if(error) {

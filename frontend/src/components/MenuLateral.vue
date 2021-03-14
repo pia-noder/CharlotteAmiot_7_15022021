@@ -1,8 +1,17 @@
 <template>
 
   <div class="menuLateral">
-      <router-link class="link" to="/Notifications">Notifications</router-link>
-      <router-link class="link" to="/Newsletter">Newsletter</router-link>
+      
+      <router-link class="link" 
+      :to="{
+            name: 'Notifications',
+            params: { userId }}">
+        Notifications</router-link>
+      <router-link class="link" 
+      :to="{
+            name: 'Newsletter',
+            }">
+        Newsletter</router-link>
       <button class="btnModalPost" @click="openModal">Publier</button>
       <div id="modal">
           <CreatePost class="modal-content" ></CreatePost>
@@ -26,6 +35,11 @@ export default {
     nom: 'MenuLateral',
     components: {
         CreatePost,
+    },
+    data(){
+        return{
+            userId: localStorage.getItem('userID'),
+        }
     },
     methods: {
         openModal () {

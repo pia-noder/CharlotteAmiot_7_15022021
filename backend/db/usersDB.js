@@ -52,4 +52,16 @@ groupomaniadb.getAllPosts  = (id) => {
     })
 }
 
+groupomaniadb.updateUser = (userId, username, poste, description, imageURL) => {
+    return new Promise ((resolve, reject) => {
+        pool.query(`UPDATE users SET username = ?, poste = ? , description = ?, imageURL = ?  WHERE id= ?`, [username, poste, description, imageURL, userId], (error, results) => {
+            if(error) {
+                console.log('connexion DB pas OK !');
+                return reject(error);
+            }
+                console.log('connexion DB OK !')
+                return resolve(results);
+        });
+    });
+}
 module.exports = groupomaniadb;

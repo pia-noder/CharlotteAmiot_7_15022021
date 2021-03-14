@@ -47,8 +47,8 @@ app.use('/auth', userRoute);
 app.use('/posts', postsRoute);
 
 //bloc pour les tests de receptions des infos au niveau du backend
-/*app.use('/posts', (req,res) => {
-  res.status(200).json(req.body);
+/*app.use('/auth', (req, res) => {
+  res.status(200).json(req.params.id);
   console.log('Envoie depuis front-logIn jusqu au serveur est OK')
   console.log(req.body);
 })*/

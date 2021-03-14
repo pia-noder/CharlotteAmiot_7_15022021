@@ -13,7 +13,7 @@ Vue.use(Router)
 
 const routes = [
   {
-    path: '/',
+    path: '/home/:userId',
     name: 'Home',
     component: Home,
     meta:{ 
@@ -22,8 +22,8 @@ const routes = [
   },
   
   {
-    path: '/profil',
-    name: 'Profil',
+    path: '/profile/:userId',
+    name: 'Profile',
     component: Profil,
     meta:{ 
       requiresAuth: true
@@ -43,8 +43,8 @@ const routes = [
   },
 
   {
-    path: '/Notifications',
-    nom: 'Notifiations',
+    path: '/Notifications/:userId',
+    name: 'Notifications',
     component: Notifications,
     meta:{ 
       requiresAuth: true
@@ -53,7 +53,7 @@ const routes = [
 
   {
     path: '/Newsletter',
-    nom: Newsletter,
+    name: 'Newsletter',
     component: Newsletter,
     meta:{ 
       requiresAuth: true

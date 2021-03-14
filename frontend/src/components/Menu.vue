@@ -7,9 +7,20 @@
     </div>
     
     <ul>
-        <li><router-link to="/">Accueil</router-link></li>
-        <li><router-link to="/profil">Profil</router-link></li>
-        <li><router-link @click.native="logout" to="/login">Déconnexion</router-link></li>
+        <li><router-link 
+        :to="{
+            name: 'Home',
+            params: { userId }}">
+            Accueil</router-link></li>
+        <li><router-link 
+        :to="{
+            name: 'Profile',
+            params: { userId }}">
+            Profile</router-link></li>
+        <li><router-link @click.native="logout" 
+        :to="{
+            name: 'LogIn'}">
+            Déconnexion</router-link></li>
     </ul>
   </div>
 </template>
@@ -18,11 +29,16 @@
 
 export default {
     name: 'Menu',
+
+    data(){
+        return{
+            userId: localStorage.getItem('userID'),
+        }
+    },
     
     methods: {
         logout(){
-           this.$store.dispatch('setToken', null);
-           this.$store.dispatch('setUser', null); 
+           localStorage.clear();
         }
     }
 

@@ -56,23 +56,20 @@ export default {
 
       async onSubmitPost () {
             const userId = localStorage.getItem('userID');
-           //var myForm = document.forms.namedItem("postForm")
-            //let myForm = document.getElementById('postForm');
-            console.log(this.postData.fileURL);
+            //console.log(this.postData.fileURL);
             const formData = new FormData();
          
             formData.append('contenu', this.postData.contenu);
             formData.append('userId', userId);
             formData.append('multimedia', this.postData.fileURL);
-            for(let fd of formData.entries()){
+            /*for(let fd of formData.entries()){
                 console.log(fd[0] + ' , ' + fd[1])
-            }
-
+            }*/
             try {
 
-                this.$store.dispatch('setFormData');
+                //this.$store.dispatch('setFormData');
 
-                await ServicePosts.postOnePost(formData)
+                await ServicePosts.createOnePost(formData)
                 this.message = 'formData Uploaded !!!'
                 
             } catch (error) {

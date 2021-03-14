@@ -2,15 +2,17 @@
   <div class="userData">
       <div class="profilImage">
         <button class="btnModalPost" @click="openUpdateProfile">
-            <img class="user-image" src="@/assets/profile-user.png" alt="">
+            <img class="user-image" :src="userData.imageURL" alt="">
         </button>
       </div>
+
       <div class="profilInfo">
           <p>email : {{ userData.email }}</p>
           <p>Poste: {{ userData.poste }}</p>
           <p>Description: {{ userData.poste }}</p>
           <p>Nom d'utilisateur: {{ userData.username }}</p>
       </div>
+
       <div id="updateProfile">
           <UpdatePofile class="updateProfile-content" ></UpdatePofile>
       </div>
@@ -19,7 +21,7 @@
 
 <script>
 window.onclick = function(event) {
-var modal = document.getElementById("modal");
+var modal = document.getElementById("updateProfile");
   if (event.target == modal) {
     modal.style.display = "none";
   }
@@ -94,7 +96,8 @@ export default {
                 margin: 15% auto; /* 15% from the top and centered */
                 padding: 20px;
                 border: 1px solid #888;
-                width: 80%; /* Could be more or less, depending on screen size */
+                border-radius: 13px;
+                width: 60%; /* Could be more or less, depending on screen size */
         }
     }
        

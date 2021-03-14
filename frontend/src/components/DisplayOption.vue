@@ -1,6 +1,6 @@
 <template>
   <div class="displayOption">
-      <div class="deleteOption" @click="deletePost">
+      <div class="deleteOption" @click="deletePost(posts)">
             <font-awesome-icon class="icon-trash" icon="trash-alt" />
             <p>Supprimer</p>
       </div>
@@ -12,15 +12,18 @@
 </template>
 
 <script>
-import ServicePosts from '@/service/ServicePosts'
+//import ServicePosts from '@/service/ServicePosts'
 
 export default {
     name: 'DisplayOption',
-
+    props:  ['posts'],
+    
     methods:{
-        async deletePost(id){
-            let response = await ServicePosts.deleteOnePost(id);
-            console.log(response)
+       deletePost(id_post){
+           console.log('au niveau du displayOption');
+           console.log(id_post);
+            this.$emit('delete-post', id_post)
+             
         },
         
     },

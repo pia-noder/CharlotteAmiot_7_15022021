@@ -26,7 +26,7 @@
 
            
         </form>
-        <router-link to="/SignUp">
+        <router-link :to="{name: 'SignUp'}">
             <BtnConnection title="Inscrivez-vous"></BtnConnection>
          </router-link>
     </div>  
@@ -89,9 +89,11 @@ export default {
                 localStorage.setItem('userToken', response.data.token)
                 localStorage.setItem('userID', response.data.userId)
                 localStorage.setItem('userData',JSON.stringify(response.data.user))
+                const userId = localStorage.getItem('userID');
                 this.$router.push({
-                    path: '/'
-                });
+                     name: 'Home', 
+                     params: { userId } 
+                     });
             }
              
                 

@@ -95,12 +95,15 @@ export default {
                 description: '',
                 imageURL: ''
             });
-            this.$store.dispatch('setToken',response.data.token);//modifier le state du fichier store
-            this.$store.dispatch('setUser', response.data.userId);
+            
+            localStorage.setItem('userData',JSON.stringify(response.data.user))
+            const userId = localStorage.getItem('userID');
             this.$router.push({
-                path: '/'
-            })
-            console.log('Blue', response);
+                    name: 'Home', 
+                    params: { userId } 
+            });
+        
+            //console.log('Utilisateur correctement crée',response);
         }
     }
 }

@@ -1,12 +1,16 @@
 import API from '@/service/APIClient';
 
 export default {
-    signup (infos) {
-        return API().post('auth/signup', infos)
+    signup (datas) {
+        return API().post('auth/signup', datas)
     },
 
-    login (infos) {
-        return API().post('auth/login', infos);
+    login (datas) {
+        return API().post('auth/login', datas);
+    },
+
+    modifyUser(userId, datas) {
+        return API().put('auth/' + userId, datas )
     },
 
     getOneUSer(){

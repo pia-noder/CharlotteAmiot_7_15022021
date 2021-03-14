@@ -82,11 +82,28 @@ exports.getAllPosts = async ( req, res ) => {
   try {
     console.log(req.params.id);
     let results = await db.getAllPosts(req.params.id);
-    resultsJSON = 
-    res.status(200).send(results[0]);
+    
+    res.status(200).json(results);
     
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error })
+    res.status(401).json({ error })
+  }
+}
+
+exports.updateUser = async (req, res ) => {
+  console.log(req.body.multimedia, req.file)
+
+    const imageURL = req.file ? `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}` : req.body.multimedia;
+
+  try {
+    console.log(req.body)
+    let results =  await db.updateUser(req.params.id, req.body.username, req.body.poste, req.body.description, imageURL)
+    console.log(results)
+    res.status(201).json(results);
+    localStorage.setItem('userData', results)
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ error })
   }
 }

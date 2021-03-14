@@ -1,5 +1,5 @@
 <template>
-  <div class="newsletter">
+  <div class="Newsletter">
       <Menu />
       <main>
         <MenuLateral class="menuLateral"/>

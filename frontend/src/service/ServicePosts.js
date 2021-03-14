@@ -14,11 +14,14 @@ export default {
         return API().get('posts/:id', id)
     },
 
-    postOnePost (data) {
+    createOnePost (data) {
         return API().post('posts', data )
     },
 
     deleteOnePost(id){
-        return API().delete('posts/:id', id)
+        return API().delete('posts/:id', { data: { id_post: id } })
     },
+    getUserPosts(userId){
+        return API().get('auth/'+ userId )             
+    }
 }

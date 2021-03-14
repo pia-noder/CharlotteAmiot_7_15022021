@@ -28,7 +28,15 @@ export default {
     CreatePost,
     Post,
   },
-  
+  data(){
+    return{
+      userId: this.$route.params.userId
+    }
+  },
+  computed:{
+   
+  },
+ 
 }
 </script>
 
