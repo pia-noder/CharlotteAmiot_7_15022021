@@ -1,6 +1,6 @@
 <template>
   <div class="displayOption">
-      <div class="deleteOption" @click="deletePost(posts)">
+      <div class="deleteOption" @click="deletePost(post)">
             <font-awesome-icon class="icon-trash" icon="trash-alt" />
             <p>Supprimer</p>
       </div>
@@ -16,7 +16,7 @@
 
 export default {
     name: 'DisplayOption',
-    props:  ['posts'],
+    props:  ['post'],
     
     methods:{
        deletePost(id_post){

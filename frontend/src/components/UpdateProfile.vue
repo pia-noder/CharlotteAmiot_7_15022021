@@ -52,7 +52,9 @@ export default {
             /*for(let fd of formData.entries()){
                 console.log(fd[0] + ' , ' + fd[1])
             }*/
-            await ServiceAuth.modifyUser(this.$route.params.userId, formData);
+           let updatedProfile =  await ServiceAuth.modifyUser(this.$route.params.userId, formData);
+           console.log(updatedProfile);
+           localStorage.setItem('userData', updatedProfile)
             this.message = 'formData Uploaded !!! Mise à jour des données utilisateur'
         },
         onSelectImage(event){

@@ -97,6 +97,7 @@ export default {
             });
             
             localStorage.setItem('userData',JSON.stringify(response.data.user))
+            localStorage.setItem('userID', response.data.userId)
             const userId = localStorage.getItem('userID');
             this.$router.push({
                     name: 'Home', 

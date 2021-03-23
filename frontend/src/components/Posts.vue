@@ -1,6 +1,6 @@
 <template>
     <panel title="Posts récemment publiés">
-        <div class="postBloc" v-for="(post, index) in posts"  :key="index">
+        <div class="postBloc" v-for="(post, index) in posts" :post="post" :key="index">
 
             <div class="post-header">
                 <img class="user-image" :src="post.imageURL" alt="photo de profile">
@@ -12,13 +12,17 @@
 
             <div class="post-content">
                 {{ post.contenu }} <br/>
-                <img class="imgContenu" :src="post.fileURL" alt="image envoyé par l'utilisateur">
+                <img v-if="post.fileURL" class="imgContenu" :src="post.fileURL" alt="image envoyé par l'utilisateur">
             </div>
 
             <div class="post-footer">
-                <span class="icon-comment"><font-awesome-icon :icon="['fas', 'comment-dots']" /></span>
-                <span class="icon-search-heart"><font-awesome-icon  icon="heart" /></span>
+                <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /><p>{{ post.count.count }}</p></span>
+                <span class="icon-heart" :class="[post.isLiked ? 'changeColor' : '']" @click="onLikePost(index)"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
             </div> 
+            <CommentsList v-if="post.commentsAreVisible" 
+            :post="post.id_post" 
+            :comments="post.comment"
+            :count="post.count"/>
             
         </div>
     </panel>
@@ -26,12 +30,14 @@
 
 <script>
 import Panel from '@/components/PanelPost.vue'
+import CommentsList from '@/components/CommentsList.vue'
 import ServicePosts from '@/service/ServicePosts'
-
+import ServiceComments from '@/service/ServiceComments'
 
 export default {
     components: {
         Panel,
+        CommentsList
 
     },
 
@@ -42,6 +48,8 @@ export default {
     },
     async created (){
         await this.prepareDynamicList()
+        await this.LikeStatus(this.$vnode.index);
+        await this.getOneOfAllComments(this.$vnode.index);
     },
 
     methods: {
@@ -49,12 +57,94 @@ export default {
        async prepareDynamicList(){
  
             let list = await ServicePosts.getAllPosts();
-            console.log(list.data)
+            //console.log(list.data)
             list.data.forEach(element => {
-            this.posts.push({...element, visible: true});
-            });
-        } ,
+            this.posts.push({...element, isLiked: false, commentsAreVisible : false, count : null, comment : []});
+                })
+        },
 
+        async LikeStatus(){
+            const userData = JSON.parse(localStorage.getItem('userData'));
+
+            //Récupérer isLiked pour pouvoir le modifier
+            this.posts.forEach(post =>{
+                    
+                const postInfosObj = {
+                    "id_user" : userData.id
+                    };
+
+                const getLikesStatut =  ServicePosts.likesStatusInfo(post.id_post, postInfosObj);
+
+                getLikesStatut.then((response) => {
+                    
+                    if(response.data && response.data.length > 0){
+                    post.isLiked =true;
+                    }  
+                   
+                });
+            })
+        },
+
+        async getOneOfAllComments() {
+            console.log(this.posts)
+            this.posts.forEach( post => {
+                const getFistComment = ServiceComments.getOneOfAllComments(post.id_post);
+
+                getFistComment.then((response) => {
+                    console.log(response)
+                    post.comment = response.data[0];
+                    post.count = response.data[1][0]
+                })
+            })
+        },
+
+       async onLikePost(index){
+           const userData = JSON.parse(localStorage.getItem('userData'));
+            
+            if(!this.posts[index].isLiked){
+                console.log(this.posts[index])
+                if(this.posts[index].likes === (null || NaN)){
+                    this.posts[index].likes = 1;
+                    this.posts[index].isLiked = true;
+
+                    const post = {"likes" : this.posts[index].likes,
+                        "id_user" : userData.id};
+
+                    await ServicePosts.likePost(this.posts[index].id_post, post)
+
+                }else{
+                     this.posts[index].likes += 1;
+                    this.posts[index].isLiked = true;
+                    const post = {"likes" : this.posts[index].likes,
+                        "id_user" : userData.id};
+                    await ServicePosts.likePost(this.posts[index].id_post, post)
+                }
+                   
+
+            } else {
+                this.posts[index].likes = this.posts.likes -= 1;
+                if(isNaN(this.posts[index].likes)){
+                    this.posts[index].likes = 0
+                    const post = {"likes" : this.posts[index].likes,
+                        "id_user" : userData.id};
+                    await ServicePosts.dislikePost(this.posts[index].id_post, post)
+                }
+                this.posts[index].isLiked = false;
+            }
+            
+        },
+
+        displayComments(index){
+            
+            
+            if(index.commentsAreVisible == true){
+                index.commentsAreVisible = false
+            } else {
+                index.commentsAreVisible = true
+            }
+        },
+
+        
     },
    
    
@@ -97,7 +187,27 @@ export default {
             }
         }
         .post-footer{
-            margin: 10px 28px 22px 19px;
+            margin: 10px 28px 22px ;
+
+            .icon-heart{
+                cursor: pointer;
+                
+                p{
+                    display: inline;
+                    margin-left: 5px;
+                }
+            }
+            .changeColor{
+                color:crimson;
+            }
+            .icon-comment{
+                margin:0 25px 0 7%;
+                cursor: pointer;
+                p{
+                    display: inline;
+                    margin: 0 15px 0 5px;
+                }
+            }
         }
     }
 </style>

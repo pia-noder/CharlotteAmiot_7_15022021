@@ -40,9 +40,42 @@ exports.createPost = async (req, res) => {
 
 exports.deleteOnePost = async (req, res) => {
     try {
+        console.log('nous sommes au niveau du controller')
         console.log(req.body.id_post)
         const results = await db.deleteOnePost(req.body.id_post);
         res.status(200).json({message: 'Post correctement supprimé'})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error })
+    }
+}
+
+
+exports.likeOnePost = async(req, res ) => {
+    try {
+    const results = await db.likeOnePost(req.params.id, req.body.likes, req.body.id_user);
+        
+        res.status(200).json({message: 'Modication du like correctement effectué'})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error })
+    }
+}
+
+exports.dislikeOnePost = async(req, res ) => {
+    try {
+        const results = await db.dislikeOnePost(req.params.id, req.body.likes, req.body.id_user);
+        res.status(200).json({message: 'Suppression like correctement effectué'})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error })
+    }
+}
+
+exports.likesStatusInfo = async (req, res) => {
+    try {
+        const results = await db.likesStatusInfo(req.params.id, req.body.id_user);
+        res.status(200).send(results)
     } catch (error) {
         console.log(error);
         res.status(500).json({ error })

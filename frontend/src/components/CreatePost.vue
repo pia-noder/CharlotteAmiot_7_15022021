@@ -16,10 +16,7 @@
                 @change="onSelectFile" 
                 >
                 <h5>{{ message }}</h5>
-                <div class="likeNComment">
-                    <span class="icon-search-link"><font-awesome-icon  icon="link" /></span>
-                    <span class="icon-search-heart"><font-awesome-icon  icon="heart" /></span>
-                </div>
+                
         </div>
         <div class="btnPublier">
             <button  type="submit">Publier</button>
@@ -66,8 +63,6 @@ export default {
                 console.log(fd[0] + ' , ' + fd[1])
             }*/
             try {
-
-                //this.$store.dispatch('setFormData');
 
                 await ServicePosts.createOnePost(formData)
                 this.message = 'formData Uploaded !!!'

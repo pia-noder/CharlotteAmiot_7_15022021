@@ -44,24 +44,25 @@ exports.signup =  (req, res ) => {
 
 
 exports.login = async (req, res, next) =>{
+  
   try {
     const regExpEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if(!regExpEmail.test(req.body.email)){
       return res.status(400).json({message: "Rentrez un format d'email valide !"})
     } 
- 
     let user = await db.loginUser(req.body.email);
     console.log(user[0]);
     
       bcrypt.compare(req.body.password, user[0].password)
       .then( valid => {
-         
+         console.log(valid)
         if(!valid){
           return res.status(400).json({message: 'mot de passe incorrect !'})
         }
           return res.status(200).json({
             userId: user[0].id,
+            status: user[0].status,
             user: user[0],
             token: jwt.sign(
               {userId: user[0].id},//pour être sûr que la requête correspond bien à cet userId
@@ -101,7 +102,6 @@ exports.updateUser = async (req, res ) => {
     let results =  await db.updateUser(req.params.id, req.body.username, req.body.poste, req.body.description, imageURL)
     console.log(results)
     res.status(201).json(results);
-    localStorage.setItem('userData', results)
   } catch (error) {
     console.log(error);
     res.status(401).json({ error })

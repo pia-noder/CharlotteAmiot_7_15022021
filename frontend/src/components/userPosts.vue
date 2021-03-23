@@ -3,13 +3,13 @@
         <div class="postBloc" v-for="(post, index) in posts"  :key="index">
 
             <div class="post-header">
-                <img class="user-image" :src="post.imageURL" alt="photo de profile">
+                <img class="user-image" :src="user.imageURL" alt="photo de profile">
                 <p>{{ post.username }}</p>
                 <p>{{ post.date_publication }}</p>
                 <span @click="post.visible = !post.visible" class="icon-dots"><font-awesome-icon  :icon="['fas', 'ellipsis-h']" /></span>
 
                 <DisplayOption  class="displayOption" 
-                                v-bind:posts="post.id_post" 
+                                v-bind:post="post.id" 
                                 v-bind:class="{ displayNone: post.visible }"
                                 @delete-post="deletePost">
                 </DisplayOption><!--v-bind:posts="post.id_post" ; sert à envoyer l'objet contenu dans data au composant enfant via le props-->
@@ -44,11 +44,13 @@ export default {
     data () {
         return {
             posts: [],
+            user:{}
            
         }
     },
     async created (){
         await this.prepareDynamicList()
+        this.user = JSON.parse(localStorage.getItem('userData'));
     },
 
     methods: {

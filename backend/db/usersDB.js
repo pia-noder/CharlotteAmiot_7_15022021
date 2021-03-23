@@ -8,6 +8,7 @@ const pool = mysql.createPool({
     user            : 'groupomania',
     password        : 'GM21/02P7_',
     database        : 'groupomania',
+    multipleStatements: true
 });
 
 let groupomaniadb = {};
@@ -15,7 +16,7 @@ let groupomaniadb = {};
 //retourne toutes les fonctions vers la base de données
 groupomaniadb.createUser =  (username, email, password, imageURL) => {
     return new Promise ((resolve, reject) => {
-        pool.query(`INSERT INTO users (id, username, email, password, poste, description, imageURL) VALUES (0, ? ,?, ?, NULL, NULL, ?)`, [username, email, password , imageURL], (error, results) => {
+        pool.query(`INSERT INTO users (id, username, email, password, poste, description, imageURL, status) VALUES (0, ? ,?, ?, NULL, NULL, ?, 'basic')`, [username, email, password , imageURL], (error, results) => {
             if(error){
                 //console.log('DB Post pas OK !')
                 return reject(error);
@@ -54,7 +55,7 @@ groupomaniadb.getAllPosts  = (id) => {
 
 groupomaniadb.updateUser = (userId, username, poste, description, imageURL) => {
     return new Promise ((resolve, reject) => {
-        pool.query(`UPDATE users SET username = ?, poste = ? , description = ?, imageURL = ?  WHERE id= ?`, [username, poste, description, imageURL, userId], (error, results) => {
+        pool.query(`UPDATE users SET username = ?, poste = ? , description = ?, imageURL = ?  WHERE id= ?;`, [username, poste, description, imageURL, userId, userId], (error, results) => {
             if(error) {
                 console.log('connexion DB pas OK !');
                 return reject(error);

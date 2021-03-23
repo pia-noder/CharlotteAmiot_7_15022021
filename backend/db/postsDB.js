@@ -7,6 +7,7 @@ const pool = mysql.createPool({
     user            : 'groupomania',
     password        : 'GM21/02P7_',
     database        : 'groupomania',
+    multipleStatements: true
 });
 
 let groupomaniadb = {};
@@ -14,7 +15,7 @@ let groupomaniadb = {};
 //retourne toutes les fonctions vers la base de données
 groupomaniadb.getAllPosts =  () => {
         return new Promise ((resolve, reject) => {
-            pool.query(`SELECT Posts.id AS id_post, Posts.contenu, Users.id AS id_user, Users.username, Users.imageURL, Posts.fileURL, Posts.date_publication, Posts.id_user AS post_user FROM Posts INNER JOIN Users ON Posts.id_user = Users.id`, (error, results) => {
+            pool.query(`SELECT Posts.id AS id_post, Posts.contenu, Users.id AS id_user, Users.username, Users.imageURL, Posts.fileURL, Posts.likes, Posts.date_publication, Posts.id_user AS post_user FROM Posts INNER JOIN Users ON Posts.id_user = Users.id ORDER BY id_post DESC`, (error, results) => {
                 if(error){
                     
                     return reject(error);
@@ -64,4 +65,46 @@ groupomaniadb.deleteOnePost = (id) => {
         })
     })
 }
+
+groupomaniadb.likeOnePost = (id_post, likes, id_user) =>{
+    return new Promise ((resolve, reject) => {
+        pool.query(`INSERT IGNORE INTO Likes (id, post_id, user_id) VALUES (0, ?, ?);UPDATE Posts SET likes = ? WHERE id = ?`, [id_post, id_user, likes, id_post], (error, results) => {
+                            if(error) {
+                                console.log('Problème de connexion à la DB !');
+                                return reject(error);
+                            }
+                                console.log('Conenxion à la BD réussi !');
+                                resolve(results);
+                        })
+    })
+}
+groupomaniadb.dislikeOnePost = (id_post, likes, id_user) =>{
+    return new Promise ((resolve, reject) => {
+        pool.query(`DELETE FROM Likes WHERE post_id = ? AND user_id = ?; 
+                        UPDATE Posts SET likes = ? WHERE id = ?` ,[id_post, id_user, likes, id_post], (error, results) => {
+                            if(error) {
+                                console.log('Problème de connexion à la DB !');
+                                return reject(error);
+                            }
+                                console.log('Conenxion à la BD réussi !');
+                                resolve(results);
+                        })
+    })
+}
+
+groupomaniadb.likesStatusInfo = (post_id, user_id) => {
+
+    return new Promise ((resolve, reject) =>{
+        pool.query(`SELECT * FROM Likes WHERE post_id = ? AND user_id = ?`, [post_id, user_id], (error, results) => {
+            if(error) {
+                console.log('Problème de connexion à la DB !');
+                return reject(error);
+            }
+                console.log('Conenxion à la BD réussi !');
+               
+                resolve(results);
+        })
+    })
+}
+
 module.exports = groupomaniadb;
