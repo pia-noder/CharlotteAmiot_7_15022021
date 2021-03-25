@@ -4,8 +4,11 @@
     <div class="main">
       <MenuLateral class="menuLateral" />
       <div class="publication">
-        <CreatePost class="bloc-post displayPost" />
-        <Post class="bloc-post post" />
+        <CreatePost @rerenderComponent="forceRerender" class="bloc-post displayPost" :key="componentKey"/>
+        <div class="postList" v-for="post in posts" :post="post"  :key="post.id_post">
+          <Post  class="bloc-post post" :post="post" />
+        </div>
+        
       </div>
     </div>
     
@@ -28,13 +31,24 @@ export default {
     CreatePost,
     Post,
   },
+  created() {
+        this.$store.dispatch('loadPosts');
+    },
   data(){
     return{
-      userId: this.$route.params.userId
+      userId: this.$route.params.userId,
+      componentKey: 0,
     }
   },
-  computed:{
-   
+  computed: {
+        posts() {
+            return this.$store.state.posts;
+        },
+    },
+  methods:{
+   forceRerender() {
+      this.componentKey += 1;
+    }
   },
  
 }

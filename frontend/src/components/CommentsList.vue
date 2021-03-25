@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div  v-for="comment in comments" :key="comment.comments_id">
+    <div  v-for="comment in comments" :key="comment" >
     <Comment :comment="comment" :post="post" />
     </div>
 
     <button
-      v-if="count.count > 1"
+      v-if="count.count > 1 && !allCommentsDisplayed"
       @click="getAllComments(post)"
     >
       <span v-if="count.count > 1">Afficher {{ count.count - 1 }} autres commentaires</span>
       <span v-else>Afficher {{ count.count - 1 }} autre commentaire</span>
     </button>
 
-    <CreateComments :post="post" />
+    <CreateComments  :post="post" />
   </div>
 </template>
 
@@ -34,8 +34,6 @@ name: 'CommentsList',
   data () {
         return {
             postIncommentsList:this.post,
-            
-            
             allCommentsDisplayed: false,
         }
     },
@@ -46,8 +44,10 @@ name: 'CommentsList',
       let response = await ServiceComments.getAllComments(id_post);
       console.log(response)
       this.comments = response.data;
-    }
-  }
+      this.allCommentsDisplayed = true;
+    },
+
+  },
 }
 
 </script>

@@ -2,19 +2,23 @@
   <div class="createPost">
 
       <div class="blocImg">
-        <img class="imgProfile" src="@/assets/profile-user.png" alt="icon du profile"> 
+        <img class="imgProfile" :src="userData.imageURL" alt="icon du profile"> 
       </div>
 
       <form enctype="multipart/form-data" @submit.prevent="onSubmitPost">
         <div class="contenu">
                 <textarea v-model="postData.contenu"   rows="5" cols="50" placeholder='Text...'></textarea>
-
+                
+                
                 <input 
+                class="inputFile"
                 type="file" 
+                id="file"
                 ref="file" 
                 name="multimedia"
                 @change="onSelectFile" 
                 >
+                <label for="file">Choisir un fichier</label>
                 <h5>{{ message }}</h5>
                 
         </div>
@@ -28,7 +32,7 @@
 
 
 <script>
-import ServicePosts from '@/service/ServicePosts.js'
+//import ServicePosts from '@/service/ServicePosts.js'
 
 export default {
     nom: 'CreatePost',
@@ -40,6 +44,7 @@ export default {
                 contenu: '',
                 fileURL: null
             },
+            userData: JSON.parse(localStorage.getItem('userData')),
 
             message: ''
             
@@ -63,9 +68,10 @@ export default {
                 console.log(fd[0] + ' , ' + fd[1])
             }*/
             try {
-
-                await ServicePosts.createOnePost(formData)
+                this.$store.dispatch('createPosts', formData)
+                /*await ServicePosts.createOnePost(formData)
                 this.message = 'formData Uploaded !!!'
+                this.$emit('rerenderComponent')*/
                 
             } catch (error) {
                 console.log(error);
@@ -106,23 +112,25 @@ export default {
             margin-top: 20px;
             border: none;
         }
-        .chooseFile{
-            display: flex;
-            width: 50%;
-            .icon-search-link {
-                margin-bottom: 20px;
-            }
-            .icon-search-images,.icon-search-video, .icon-search-heart, .icon-search-link{
-                margin-left: 40px;
-                cursor: pointer;
-                
-            }
-
-            .icon-search-link{
-                margin-left: 40px;
-            }
-           
+        .inputFile {
+            width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
         }
+        .inputFile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: rgb(229, 115, 115);
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+
     }
     .btnPublier{
 

@@ -1,6 +1,8 @@
 <template>
+    
   <div class="displayOption">
-      <div class="deleteOption" @click="deletePost(post)">
+
+      <div class="deleteOption" @click="deletePost">
             <font-awesome-icon class="icon-trash" icon="trash-alt" />
             <p>Supprimer</p>
       </div>
@@ -19,11 +21,8 @@ export default {
     props:  ['post'],
     
     methods:{
-       deletePost(id_post){
-           console.log('au niveau du displayOption');
-           console.log(id_post);
-            this.$emit('delete-post', id_post)
-             
+       deletePost(){
+            this.$emit('delete-post') 
         },
         
     },

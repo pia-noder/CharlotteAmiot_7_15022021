@@ -22,7 +22,7 @@
           </div> 
         </div>
 
-        <span class="deleteOption" @click="deleteComment(post, comment)">
+        <span v-if="userStatus == 'Admin' || userID == comment.comments_user" class="deleteOption" @click="deleteComment(post, comment)">
           <font-awesome-icon class="icon-trash" icon="trash-alt" />  
         </span>
       </div>
@@ -37,9 +37,12 @@ import ServiceComments from '@/service/ServiceComments'
 export default {
 name: 'Comment',
 props:[ 'post', 'comment' ],
-    Data(){
+
+    data(){
         return{
             userData: JSON.parse(localStorage.getItem('userData')),
+            userStatus: localStorage.getItem('userStatus'),
+            userID: localStorage.getItem('userID')
         }
     },
     methods:{

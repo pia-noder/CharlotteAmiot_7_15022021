@@ -25,7 +25,18 @@ groupomaniadb.getAllPosts =  () => {
             });
         });
 };
-
+groupomaniadb.findLastPost = () => {
+    return new Promise ((resolve, reject) => {
+        pool.query(`SELECT Posts.id AS id_post, Posts.contenu, Users.id AS id_user, Users.username, Users.imageURL, Posts.fileURL, Posts.likes, Posts.date_publication, Posts.id_user AS post_user FROM Posts INNER JOIN Users ON Posts.id_user = Users.id ORDER BY id_post DESC LIMIT 1`, (error, results) => {
+            if(error){
+                console.log('connexion DB pas OK !')
+                return reject(error);
+            }
+                console.log('connexion DB OK !')
+                return resolve(results);
+        });
+    });
+}
 groupomaniadb.getOnePost = (id) => {
     return new Promise ((resolve, reject) => {
         pool.query(`SELECT * FROM posts WHERE id= ?`, [ id ] , (error, results) => {

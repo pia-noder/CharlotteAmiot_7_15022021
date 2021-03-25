@@ -1,5 +1,5 @@
 <template>
-    <panel title="Posts récemment publiés">
+    <div class="">
         <div class="postBloc" v-for="(post, index) in posts"  :key="index">
 
             <div class="post-header">
@@ -26,17 +26,17 @@
             </div> 
             
         </div>
-    </panel>
+ </div>
 </template>
 
 <script>
-import Panel from '@/components/PanelPost.vue'
+
 import ServicePosts from '@/service/ServicePosts'
 import DisplayOption from '@/components/DisplayOption'
 
 export default {
     components: {
-        Panel,
+
         DisplayOption
 
     },

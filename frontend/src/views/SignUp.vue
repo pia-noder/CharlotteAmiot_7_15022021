@@ -36,7 +36,7 @@
             <BtnConnection type="submit" :disabled="$v.$invalid" title="Validez"> </BtnConnection>
 
         </form>
-        <p class="linkToLogInPage">vous avez déjà un compte ?<router-link to="/LogIn"><br>Connectez-vous</router-link> </p>
+        <p class="linkToLogInPage">vous avez déjà un compte ?<router-link to="/"><br>Connectez-vous</router-link> </p>
     </div>
 
     

@@ -65,6 +65,7 @@ export default {
                     console.log(fd[0] + ' , ' + fd[1])
                 }*/
           await serviceComments.createComment(post_id, formData);
+          this.$emit('rerenderComponent')
     },
 
   },

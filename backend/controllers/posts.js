@@ -28,8 +28,10 @@ exports.createPost = async (req, res) => {
 
     try {
         
-        const results = await db.createPost(req.body.contenu, req.body.userId, fileURL);
-        res.status(201).json({message: 'Post correctement créé'});
+        await db.createPost(req.body.contenu, req.body.userId, fileURL);
+        let post = await db.findLastPost();
+        
+        res.status(201).json(post);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error })

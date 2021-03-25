@@ -1,12 +1,17 @@
 <template>
-    <panel title="Posts récemment publiés">
-        <div class="postBloc" v-for="(post, index) in posts" :post="post" :key="index">
-
+    
+        <div class="postBloc" >
             <div class="post-header">
                 <img class="user-image" :src="post.imageURL" alt="photo de profile">
                 <p>{{ post.username }}</p>
                 <p>{{ post.date_publication }}</p>
-                
+
+                <BtnEdit
+                    :post="post"
+                    :isAdmin="userStatus == 'Admin'"
+                    :isUser="userID == post.id_user"
+                 />
+
 
             </div>
 
@@ -16,93 +21,89 @@
             </div>
 
             <div class="post-footer">
-                <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /><p>{{ post.count.count }}</p></span>
-                <span class="icon-heart" :class="[post.isLiked ? 'changeColor' : '']" @click="onLikePost(index)"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
+                <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /><p>{{ }}</p></span>
+                <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost(index)"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
             </div> 
             <CommentsList v-if="post.commentsAreVisible" 
             :post="post.id_post" 
             :comments="post.comment"
-            :count="post.count"/>
+            />
             
         </div>
-    </panel>
+
 </template>
 
 <script>
-import Panel from '@/components/PanelPost.vue'
+
 import CommentsList from '@/components/CommentsList.vue'
 import ServicePosts from '@/service/ServicePosts'
-import ServiceComments from '@/service/ServiceComments'
+//import ServiceComments from '@/service/ServiceComments'
+import BtnEdit from '@/components/BtnEdit'
+
 
 export default {
     components: {
-        Panel,
-        CommentsList
+        CommentsList,
+        BtnEdit,
 
     },
-
+    props:['post'],
     data () {
         return {
-            posts: [],
+            //posts: [],
+            userStatus: localStorage.getItem('userStatus'),
+            userID: localStorage.getItem('userID'),
+            isLiked: false,
         }
     },
     async created (){
-        await this.prepareDynamicList()
-        await this.LikeStatus(this.$vnode.index);
-        await this.getOneOfAllComments(this.$vnode.index);
+        await this.LikeStatus(this.post);
+        
+        //await this.getOneOfAllComments(this.$vnode.index);
     },
+ 
 
     methods: {
-       
-       async prepareDynamicList(){
- 
-            let list = await ServicePosts.getAllPosts();
-            //console.log(list.data)
-            list.data.forEach(element => {
-            this.posts.push({...element, isLiked: false, commentsAreVisible : false, count : null, comment : []});
-                })
-        },
 
-        async LikeStatus(){
+        async LikeStatus(post){
             const userData = JSON.parse(localStorage.getItem('userData'));
 
             //Récupérer isLiked pour pouvoir le modifier
-            this.posts.forEach(post =>{
+            
                     
                 const postInfosObj = {
                     "id_user" : userData.id
-                    };
+                }
 
                 const getLikesStatut =  ServicePosts.likesStatusInfo(post.id_post, postInfosObj);
-
+               
                 getLikesStatut.then((response) => {
-                    
+                     console.log(response)
                     if(response.data && response.data.length > 0){
-                    post.isLiked =true;
+                    this.isLiked = true;
                     }  
-                   
                 });
-            })
+           
         },
 
-        async getOneOfAllComments() {
-            console.log(this.posts)
+        /*async getOneOfAllComments() {
+            
             this.posts.forEach( post => {
                 const getFistComment = ServiceComments.getOneOfAllComments(post.id_post);
 
                 getFistComment.then((response) => {
-                    console.log(response)
+                    
                     post.comment = response.data[0];
                     post.count = response.data[1][0]
                 })
             })
-        },
+        },*/
 
        async onLikePost(index){
            const userData = JSON.parse(localStorage.getItem('userData'));
             
-            if(!this.posts[index].isLiked){
-                console.log(this.posts[index])
+            if(!this.isLiked){
+
                 if(this.posts[index].likes === (null || NaN)){
                     this.posts[index].likes = 1;
                     this.posts[index].isLiked = true;
@@ -132,19 +133,7 @@ export default {
                 this.posts[index].isLiked = false;
             }
             
-        },
-
-        displayComments(index){
-            
-            
-            if(index.commentsAreVisible == true){
-                index.commentsAreVisible = false
-            } else {
-                index.commentsAreVisible = true
-            }
-        },
-
-        
+        },  
     },
    
    
@@ -169,10 +158,7 @@ export default {
             .icon-dots{
                 cursor: pointer;
             }
-            .displayOption{
-                position: absolute;
-                right: -150px;
-            }
+            
             .displayNone{
                 display: none;
             }
