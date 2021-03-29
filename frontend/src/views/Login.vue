@@ -3,7 +3,9 @@
     <img class="logo-connexion" src="@/assets/icon-above-font.svg" alt="logo Groupomania">
 
     <div class="bloc-connexion">
-        
+
+        <span class="message-error">{{messageErreur}}</span>
+
         <form class="bloc-logIn" @submit.prevent="onSubmitLogIn" novalidate >
 
             <input v-model="email"  type="email" placeholder="email" @blur="$v.email.$touch()">
@@ -20,14 +22,14 @@
             
             <a href="#">Mot de passe oublié ?</a>
            
-            <BtnConnection :disabled="$v.$invalid" title="connexion"></BtnConnection>
+            <BtnConnection class="btn-connection" :disabled="$v.$invalid" title="connexion"></BtnConnection>
             
             
 
            
         </form>
         <router-link :to="{name: 'SignUp'}">
-            <BtnConnection title="Inscrivez-vous"></BtnConnection>
+            <BtnConnection  class="btn-connection" title="Inscrivez-vous"></BtnConnection>
          </router-link>
     </div>  
 
@@ -58,6 +60,7 @@ export default {
         return {
              email: '',
              password:'',
+             messageErreur:null,
 
         }
     },
@@ -78,38 +81,40 @@ export default {
     methods: {
         async onSubmitLogIn () {
             //Appel de l'endpoint register auquel on passe email & password
-         const response = await  serviceAuth.login({
+          await  serviceAuth.login({
                 email: this.email,
                 password: this.password
             })
-
-            if(response){
-                 
-                console.log(response);
-                localStorage.setItem('userToken', response.data.token)
-                localStorage.setItem('userID', response.data.userId)
-                localStorage.setItem('userStatus', response.data.status)
-                localStorage.setItem('userData',JSON.stringify(response.data.user))
-                const userId = localStorage.getItem('userID');
-                this.$router.push({
-                     name: 'Home', 
-                     params: { userId } 
-                     });
-            }
-             
+            .then(response => {
                 
-           // console.log("envoie du formulaire login correctement déclenché")
                 
+                    console.log(response, 'response');
+                    localStorage.setItem('userToken', response.data.token)
+                    localStorage.setItem('userID', response.data.userId)
+                    localStorage.setItem('userStatus', response.data.status)
+                    localStorage.setItem('userData',JSON.stringify(response.data.user))
+                    const userId = localStorage.getItem('userID');
+                    this.$router.push({
+                        name: 'Home', 
+                        params: { userId } 
+                        });
+                
+            })
+            .catch(error => {
+                console.log(error)
+                this.messageErreur = 'Adresse e-mail ou mot de passe incorrect.'
+            })
+      
         },
     }
 }
 </script>
 
-<style >
+<style lang="scss" >
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 
 .logo-connexion{
-    width: 42%;
+    width: 42%; 
 }
 .connection{
     display: flex;
@@ -118,6 +123,10 @@ export default {
     align-items: center;
 
     font-family: 'Montserrat', sans-serif;
+    .message-error{
+        color: #74c69d;
+        font-weight: bold;
+    }
 }
 .bloc-logIn, .bloc-SignIn{
     display: flex;
@@ -158,7 +167,9 @@ p{
     font-weight: 700;
 }
 
-
+.btn-connection{
+text-align: center;
+}
 .btntoSignBloc{
 
     background-color: #E57373;

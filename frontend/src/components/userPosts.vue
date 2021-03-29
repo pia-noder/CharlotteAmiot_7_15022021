@@ -1,72 +1,125 @@
 <template>
-    <div class="">
-        <div class="postBloc" v-for="(post, index) in posts"  :key="index">
-
-            <div class="post-header">
-                <img class="user-image" :src="user.imageURL" alt="photo de profile">
-                <p>{{ post.username }}</p>
-                <p>{{ post.date_publication }}</p>
-                <span @click="post.visible = !post.visible" class="icon-dots"><font-awesome-icon  :icon="['fas', 'ellipsis-h']" /></span>
-
-                <DisplayOption  class="displayOption" 
-                                v-bind:post="post.id" 
-                                v-bind:class="{ displayNone: post.visible }"
-                                @delete-post="deletePost">
-                </DisplayOption><!--v-bind:posts="post.id_post" ; sert à envoyer l'objet contenu dans data au composant enfant via le props-->
-            </div>
-
-            <div class="post-content">
-                {{ post.contenu }} <br/>
-                <img class="imgContenu" :src="post.fileURL" alt="image envoyé par l'utilisateur">
-            </div>
-
-            <div class="post-footer">
-                <span class="icon-comment"><font-awesome-icon :icon="['fas', 'comment-dots']" /></span>
-                <span class="icon-search-heart"><font-awesome-icon  icon="heart" /></span>
-            </div> 
-            
+    <div class="userPostBloc">
+        
+        <div class="post-header">
+            <img v-if="user.imageURL" class="user-image" :src="user.imageURL" alt="photo de profile">
+            <p>{{ post.username }}</p>
+            <p>{{ post.date_publication }}</p>
+            <BtnEdit
+                :post="post"
+                :isAdmin="userStatus == 'Admin'"
+                :isUser="userID == post.id_user"
+            />
         </div>
- </div>
+
+        <div class="post-content">
+            {{ post.contenu }} <br/>
+            <img v-if="post.fileURL" class="imgContenu" :src="post.fileURL" alt="image envoyé par l'utilisateur">
+        </div>
+
+        <div class="post-footer">
+            <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /></span>
+            <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
+        </div> 
+        <CommentsList v-if="this.commentsAreVisible" 
+            :post="post.id" 
+        />
+
+    </div>
 </template>
 
 <script>
 
+//import ServicePosts from '@/service/ServicePosts'
 import ServicePosts from '@/service/ServicePosts'
-import DisplayOption from '@/components/DisplayOption'
+
+import CommentsList from '@/components/CommentsList.vue'
+import BtnEdit from '@/components/BtnEdit'
 
 export default {
     components: {
-
-        DisplayOption
+        CommentsList,
+        BtnEdit,
 
     },
+    props:['post'],
 
     data () {
         return {
-            posts: [],
-            user:{}
-           
+            user:{},
+            userStatus: localStorage.getItem('userStatus'),
+            userID: localStorage.getItem('userID'), 
+            commentsAreVisible: false,
+            isLiked: false,
         }
     },
+
     async created (){
-        await this.prepareDynamicList()
-        this.user = JSON.parse(localStorage.getItem('userData'));
+        await this.LikeStatus(this.post);     
     },
-
+    
     methods: {
-       
-       async prepareDynamicList(){
-            //console.log(this.$route.params.userId)
-            let list = await ServicePosts.getUserPosts(this.$route.params.userId);
-            //console.log(list.data)
-            list.data.forEach(element => {
-            this.posts.push({...element, visible: true});
-            });
-        } ,
+       displayComments(){
+            if(this.commentsAreVisible == true){
+                this.commentsAreVisible = false
+            } else {
+                this.commentsAreVisible = true
+            }
+        },
 
-        async deletePost(id){
-            await ServicePosts.deleteOnePost(id);
-        }
+        async LikeStatus(post){
+            const userData = JSON.parse(localStorage.getItem('userData'));
+        
+                const postInfosObj = {
+                    "id_user" : userData.id
+                }
+
+                const getLikesStatut =  ServicePosts.likesStatusInfo(post.id_post, postInfosObj);
+               
+                getLikesStatut.then((response) => {
+                    if(response.data && response.data.length > 0){
+                    this.isLiked = true;
+                    }  
+                });
+           
+        },
+
+       async onLikePost(){
+           const userData = JSON.parse(localStorage.getItem('userData'));
+            
+            if(!this.isLiked){
+
+                if(this.post.likes === (null || NaN)){
+                    this.post.likes = 1;
+                    this.post.isLiked = true;
+
+                    const post = {"likes" : this.post.likes,
+                        "id_user" : userData.id};
+
+                    await ServicePosts.likePost(this.post.id_post, post)
+
+                }else{
+                     this.post.likes += 1;
+                    this.isLiked = true;
+                    const post = {"likes" : this.post.likes,
+                        "id_user" : userData.id};
+                    await ServicePosts.likePost(this.post.id_post, post)
+                }
+                   
+
+            } else {
+                this.post.likes = this.posts.likes -= 1;
+                if(isNaN(this.post.likes)){
+                    this.post.likes = 0
+                    const post = {"likes" : this.post.likes,
+                        "id_user" : userData.id};
+                    await ServicePosts.dislikePost(this.post.id_post, post)
+                }
+                this.isLiked = false;
+            }
+            
+        },  
+       
     },
    
    
@@ -74,27 +127,33 @@ export default {
 </script>
 
 <style lang="scss" >
-    .postBloc{
-        margin-top: 13px;
+    .userPostBloc{
+        width: 50%;
         border: 2px solid #E57373;
         border-radius: 13px;
+        margin: 10px 0 10px 0;
 
         .post-header{
             display: flex;
             justify-content: space-between;
             margin: 19px 30px 0 19px;
             position: relative;
+
             .user-image{
                 width: 5%;
-                margin-right: 5%
+                margin-right: 5%;
+                border-radius: 100%;
             }
+
             .icon-dots{
                 cursor: pointer;
             }
+
             .displayOption{
                 position: absolute;
                 right: -150px;
             }
+
             .displayNone{
                 display: none;
             }
@@ -109,7 +168,20 @@ export default {
             }
         }
         .post-footer{
-            margin: 10px 28px 22px 19px;
+            margin: 10px 28px 22px 10%;
+
+            .icon-heart{
+                cursor: pointer;
+                margin-left: 20px;
+                
+                p{
+                    display: inline;
+                    margin-left: 5px;
+                }
+            }
+            .changeColor{
+                color:crimson;
+            }
         }
     }
 </style>

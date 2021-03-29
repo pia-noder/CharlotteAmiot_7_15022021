@@ -3,7 +3,7 @@
     <img class="imgLogoBlack" src="@/assets/icon-left-font-monochrome-black.svg" alt="logo en noir et blanc de Groupomania">
     <div class="search">
     <font-awesome-icon class="icon-search" icon="search" />
-    <input class="searchBarre" type="text">  
+    <input aria-label="Faire une recherche" class="searchBarre" type="text">  
     </div>
     
     <ul>

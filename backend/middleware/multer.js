@@ -6,11 +6,6 @@ const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png',
- /* 'video/x-flv': 'flv',
-  'video/mp4': 'mp4',
-  'video/x-msvideo': 'avi',
-  'video/quicktime': 'mov',
-  'video/x-ms-wmv': 'wmv'*/
 };
 
 //indication de l'endroit où enregistrer les fichiers entrants et sous quel nom

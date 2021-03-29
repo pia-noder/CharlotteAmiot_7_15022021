@@ -1,25 +1,38 @@
 <template>
   <div>
-    <div  v-for="comment in comments" :key="comment" >
-    <Comment :comment="comment" :post="post" />
+
+    <div  v-for="comment in comments" :key="comment.id" >
+
+      <Comment  
+        :comment="comment" 
+        :post="post" 
+        @delete-comment="pullCommentFromComments"
+      />
+
     </div>
 
     <button
-      v-if="count.count > 1 && !allCommentsDisplayed"
+      v-if="count > 1 && !allCommentsDisplayed"
       @click="getAllComments(post)"
     >
-      <span v-if="count.count > 1">Afficher {{ count.count - 1 }} autres commentaires</span>
-      <span v-else>Afficher {{ count.count - 1 }} autre commentaire</span>
+
+      <span v-if="count > 1">Afficher {{ count - 1 }} autres commentaires</span>
+      <span v-else>Afficher {{ count - 1 }} autre commentaire</span>
+
     </button>
 
-    <CreateComments  :post="post" />
+    <CreateComments  
+      :post="post" 
+      @comment-created="pushNewCommentInComments"
+    />
+
   </div>
 </template>
 
 <script>
+import ServiceComments from '@/service/ServiceComments'
 
 import CreateComments from '@/components/CreateComments'
-import ServiceComments from '@/service/ServiceComments'
 import Comment from '@/components/Comment'
 
 
@@ -29,24 +42,48 @@ name: 'CommentsList',
     CreateComments,
     Comment,
   },
-  props:['post', 'comments', 'count'],
+  props:['post'],
+
+created() {
+       //this.$store.dispatch('loadOneComments', this.post);
+      this.getOneOfAllComments(this.post);
+    },
 
   data () {
         return {
             postIncommentsList:this.post,
             allCommentsDisplayed: false,
+            comments:[],
+            count:0,
         }
     },
+  
 
   methods:{
-    
-    async getAllComments(id_post){
-      let response = await ServiceComments.getAllComments(id_post);
-      console.log(response)
-      this.comments = response.data;
+
+    getOneOfAllComments(post) {
+      const getFistComment = ServiceComments.getOneOfAllComments(post);
+
+      getFistComment.then((response) => {
+        this.comments = response.data[0];
+        this.count = response.data[1][0].count
+      })    
+    },
+
+    async getAllComments(post){
+      ServiceComments.getAllComments(post).then(response => {
+        this.comments = response.data;
+      });
+      //this.$store.dispatch('loadComments', this.post);
       this.allCommentsDisplayed = true;
     },
 
+    pushNewCommentInComments(newComment){
+      this.comments.push(newComment)
+    },
+    pullCommentFromComments(deletedComment){
+       this.comments = this.comments.filter(comment => comment.comments_id !== deletedComment)
+    }
   },
 }
 

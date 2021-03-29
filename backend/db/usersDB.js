@@ -1,6 +1,9 @@
 
 const mysql = require('mysql');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 //Use connection pooling to improve the performance of MySQL and not overload the MySQL server with too many connections. 
 const pool = mysql.createPool({
     connectionLimit : 10,
@@ -64,5 +67,20 @@ groupomaniadb.updateUser = (userId, username, poste, description, imageURL) => {
                 return resolve(results);
         });
     });
+}
+
+groupomaniadb.deleteUser = (user_id) => {
+    console.log('dans la BDD')
+    console.log(user_id);
+    return new Promise ((resolve, reject) => {
+        pool.query(`DELETE FROM users WHERE id = ?`, [user_id], (error, results) => {
+            if(error) {
+                console.log('connexion DB pas OK !');
+                return reject(error);
+            }
+                console.log('connexion DB OK !')
+                return resolve(results);
+        })
+    })
 }
 module.exports = groupomaniadb;

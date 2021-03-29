@@ -1,9 +1,9 @@
 const db = require('../db/postsDB');
+const fs = require('fs');
 
 
 exports.getAllPosts = async (req, res) => {
     try {
-        //res.status(200).json({message: "Data arrivées au controller !"})
         let results = await db.getAllPosts();
         res.status(200).json(results);
     } catch (error) {
@@ -25,12 +25,9 @@ exports.getOnePost = async ( req,res ) => {
 exports.createPost = async (req, res) => {
 
     const fileURL = req.file ? `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}` : null;
-
-    try {
-        
+    try {    
         await db.createPost(req.body.contenu, req.body.userId, fileURL);
         let post = await db.findLastPost();
-        
         res.status(201).json(post);
     } catch (error) {
         console.log(error);
@@ -43,9 +40,36 @@ exports.createPost = async (req, res) => {
 exports.deleteOnePost = async (req, res) => {
     try {
         console.log('nous sommes au niveau du controller')
-        console.log(req.body.id_post)
-        const results = await db.deleteOnePost(req.body.id_post);
-        res.status(200).json({message: 'Post correctement supprimé'})
+        console.log(req.body)
+       await db.getfileURL(req.body.id_post)
+       .then(file => {
+           
+            file = JSON.stringify(file);
+            fileLisible = JSON.parse(file);
+            console.log(fileLisible[0].fileURL)
+
+           if(fileLisible[0].fileURL){
+               
+                console.log(fileLisible[0].fileURL, 'fileLisible');
+
+                const filename = fileLisible[0].fileURL.split('/multimedia/')[1];
+                fs.unlink(`multimedia/${filename}`, error => {
+                if(error){
+                    console.log(error)
+                }
+                db.deleteOnePost(req.body.id_post);
+                res.status(200).json({message: 'Post correctement supprimé'})
+                })
+           } else {
+               
+                db.deleteOnePost(req.body.id_post);
+                res.status(200).json({message: 'Post correctement supprimé'})
+           }
+    
+       })
+        .catch(error => { res.status(401).json({error})})
+       
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({ error })

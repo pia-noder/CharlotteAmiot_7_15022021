@@ -5,9 +5,17 @@
       <MenuLateral class="menuLateral" />
       <div class="publication">
         <CreatePost @rerenderComponent="forceRerender" class="bloc-post displayPost" :key="componentKey"/>
-        <div class="postList" v-for="post in posts" :post="post"  :key="post.id_post">
-          <Post  class="bloc-post post" :post="post" />
+
+        <div v-if="posts[0]" class="if-post">
+          <div class="postList" v-for="post in posts" :post="post"  :key="post.id_post">
+            <Post  class="bloc-post post" :post="post" />
+            
+          </div>
         </div>
+        <div v-else class="text-default__post">
+            <p>- Aucun Poste Publié Pour Le Moment -</p>
+        </div>
+        
         
       </div>
     </div>
@@ -78,6 +86,11 @@ export default {
         .post{
           margin-top:23px;
         }
+      }
+      .text-default__post{
+        color: rgb(229, 115, 115);
+        margin: 20px 0 0 3%;
+        font-size: 1.5em;
       }
 }
 </style>

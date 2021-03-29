@@ -10,10 +10,15 @@ export default {
     },
 
     modifyUser(userId, datas) {
+        console.log(datas)
         return API().put('auth/' + userId, datas )
     },
 
     getOneUSer(){
         return API().get('auth/user')
-    }
+    },
+    deleteUser(userId){
+        console.log(userId)
+        return API().delete('auth/' + userId);
+    },
 };

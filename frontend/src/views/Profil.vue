@@ -5,9 +5,12 @@
     <main>
       <MenuLateral class="menuLateral" />
       <div class="blocProfil">
-        <h2>Bienvenue {{user.username}} sur votre page de profile</h2>
         <DisplayProfil />
-        <UserPosts class="userPosts" />
+        <div v-for="post in posts"  :key="post.id">
+          <UserPosts class="userPosts" :post="post" />
+        </div>
+      
+        
       </div>
     </main>
     
@@ -32,14 +35,16 @@ export default {
     DisplayProfil,
     UserPosts
   },
-
-  data(){
-    return{
-      user:{
-        username: 'Jade',
-      }
-    }
-  }
+  async created (){
+        //await this.prepareDynamicList()
+        this.user = JSON.parse(localStorage.getItem('userData'));
+        this.$store.dispatch('loadUserPosts',this.$route.params.userId);
+    },
+    computed: {
+        posts(){
+            return this.$store.state.userPosts;
+        }
+    },
 }
 </script>
 
@@ -47,9 +52,11 @@ export default {
 
   main{
     display: flex;
+    margin-top: 10px ;
 
     .blocProfil {
       flex: 3;
+      width: 50%;
       .userPosts{
         width: 75%;
       }

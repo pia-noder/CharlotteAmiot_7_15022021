@@ -25,7 +25,8 @@ exports.createComment = async (req, res, next) => {
     const fileURL = req.file ? `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}` : null;
     try {
         await db.createComment(req.body.contenu, req.body.userId, fileURL, req.params.postId);
-        res.status(201).json({message: 'Commentaire correctement créé !'});
+        let comment = await db.findLastComment(); 
+        res.status(201).json(comment);
     } catch (error) {
         console.log(error);
         res.status(500).json({error});

@@ -22,7 +22,7 @@
           </div> 
         </div>
 
-        <span v-if="userStatus == 'Admin' || userID == comment.comments_user" class="deleteOption" @click="deleteComment(post, comment)">
+        <span v-if="userStatus == 'admin' || userID == comment.comments_user" class="deleteOption" @click="deleteComment(post, comment.comments_id)">
           <font-awesome-icon class="icon-trash" icon="trash-alt" />  
         </span>
       </div>
@@ -46,9 +46,9 @@ props:[ 'post', 'comment' ],
         }
     },
     methods:{
-      async deleteComment(post,comment){
-
-            await ServiceComments.deleteComment(post, comment.comments_id)
+      async deleteComment(post,comment_id){
+            await ServiceComments.deleteComment(post, comment_id);
+            this.$emit('delete-comment', comment_id);
         },
     }
     

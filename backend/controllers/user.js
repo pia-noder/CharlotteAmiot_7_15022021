@@ -24,8 +24,6 @@ exports.signup =  (req, res ) => {
     }
     bcrypt.hash(req.body.password,10)
     .then( hash =>{
-      console.log(hash);
-      console.log(req.body)
       const defaultImg = 'http://localhost:3000/multimedia/profile-user.png';
       //envoie vers la DB
       let results =  db.createUser(req.body.username, req.body.email, hash, defaultImg);
@@ -99,9 +97,20 @@ exports.updateUser = async (req, res ) => {
 
   try {
     console.log(req.body)
-    let results =  await db.updateUser(req.params.id, req.body.username, req.body.poste, req.body.description, imageURL)
+    await db.updateUser(req.params.id, req.body.username, req.body.poste, req.body.description, imageURL);
+    let results = await db.getOneUser(req.params.id);
     console.log(results)
     res.status(201).json(results);
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ error })
+  }
+}
+
+exports.deleteUser = async (req, res) => {
+  try {
+    await db.deleteUser(req.params.id);
+    res.status(200).json({message: 'utilisateur supprimé !'})
   } catch (error) {
     console.log(error);
     res.status(401).json({ error })

@@ -6,6 +6,7 @@
       :to="{
             name: 'Notifications',
             params: { userId }}">
+        <font-awesome-icon class="icon-trash" icon="bell" />
         Notifications</router-link>
       <router-link class="link" 
       :to="{
@@ -23,6 +24,7 @@
 <script>
 
 window.onclick = function(event) {
+    
 var modal = document.getElementById("modal");
   if (event.target == modal) {
     modal.style.display = "none";

@@ -1,21 +1,29 @@
 <template>
   <div class="userData">
-      <div class="profilImage">
-        <button class="btnModalPost" @click="openUpdateProfile">
-            <img class="user-image" :src="userData.imageURL" alt="">
-        </button>
-      </div>
+    <div class="profilImage">
+    <button class="btnModalPost" @click="openUpdateProfile">
+        <img v-if="userData.imageURL" class="user-image" :src="userData.imageURL" alt="image du profil">
+    </button>
+    </div>
 
-      <div class="profilInfo">
-          <p>email : {{ userData.email }}</p>
-          <p>Poste: {{ userData.poste }}</p>
-          <p>Description: {{ userData.poste }}</p>
-          <p>Nom d'utilisateur: {{ userData.username }}</p>
-      </div>
+    <div class="profilInfo">
+        <p>email : {{ userData.email }}</p>
+        <p>Poste: {{ userData.poste }}</p>
+        <p>Description: {{ userData.poste }}</p>
+        <p>Nom d'utilisateur: {{ userData.username }}</p>
+    </div>
 
-      <div id="updateProfile">
-          <UpdatePofile class="updateProfile-content" ></UpdatePofile>
-      </div>
+    <div id="updateProfile">      
+        <UpdatePofile class="updateProfile-content" ></UpdatePofile>
+    </div>
+
+    <div class="deleteUser">
+        <button @click="deleteUser(userData.id)">
+          Supprimer compte
+        </button>  
+    </div>
+      
+      
   </div>
 </template>
 
@@ -26,8 +34,10 @@ var modal = document.getElementById("updateProfile");
     modal.style.display = "none";
   }
 }
+import ServiceAuth from '@/service/ServiceAuthentification'
 
 import UpdatePofile from '@/components/UpdateProfile'
+
 export default {
     name: 'blocProfil',
 
@@ -49,6 +59,15 @@ export default {
             var modal = document.getElementById("updateProfile");
            modal.style.display = "block";
         },
+
+       async deleteUser(user_id){
+            await ServiceAuth.deleteUser(user_id);
+            localStorage.clear();
+            this.$router.push({
+                    name: 'LogIn',  
+            });
+
+        }
     },
 }
     
@@ -64,10 +83,14 @@ export default {
         padding: 20px;
         .profilImage{
             width: 25%;
-
+                .btnModalPost{
+                    background-color: white;
+                    border: none;
+                }
                 img{
                 width: 50%;
                 text-align: center;
+                border-radius: 100%;
             }
         }
 

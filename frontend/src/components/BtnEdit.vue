@@ -2,7 +2,7 @@
   <div class="BtnEdit">
     <span v-if=" isAdmin || isUser "  @click="toggleVisible" class="icon-dots"><font-awesome-icon  :icon="['fas', 'ellipsis-h']" /></span>
     <DisplayOption v-if="isVisible"
-    @delete-post="deletePost(post.id_post)" />
+    @delete-post="deletePost(post.id_post || post.id)" />
 
   </div>
 </template>

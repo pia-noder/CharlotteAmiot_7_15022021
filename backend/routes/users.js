@@ -20,7 +20,6 @@ router.post('/login', controllerUsers.login);
 })*/
 router.get('/:id', auth, controllerUsers.getAllPosts);
 router.put('/:id', auth, multer, controllerUsers.updateUser)
-/*router.put('/:userId', auth, multer, controllerUsers.modifyOneUser);
-router.delete('/:userId', auth, controllerUsers.deleteOneUser)*/
+router.delete('/:id', auth, controllerUsers.deleteUser)
 
 module.exports = router;

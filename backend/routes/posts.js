@@ -11,18 +11,8 @@ const controllerComments = require ('../controllers/comments');
 //const controllerComments = require ('../controllers/comments');
 //const controllerLikes = require ('../controllers/likes');
 
-//Création des routes pour envoyer les requêtes au controller concerné
 
-/*router.post('/', (req,res) => {
-    res.status(200).json({message: 'data arrivé au fichier route'});
-    console.log(req.data);
-})*/
 router.post('/', auth, multer, controllerPost.createPost);
-/*router.post('/',multer, (req, res) => {
-    console.log('Le fichier passe bien le middleware multer, aller vérifier si le fichier est dans le dossier multimedia')
-    console.log(req.file)
-    res.status(200);
-});*/
 router.get('/:id', auth,  controllerPost.getOnePost);
 router.get('/', auth, controllerPost.getAllPosts);
 router.delete('/:id', auth,  controllerPost.deleteOnePost);
@@ -39,7 +29,6 @@ router.delete('/:postId/comments/:id', auth, controllerComments.deleteOneComment
 router.put('/:id/likes', auth, controllerPost.likeOnePost);
 router.put('/:id/dislikes', auth, controllerPost.dislikeOnePost);
 router.post('/:id/likes', auth, controllerPost.likesStatusInfo);
-/*router.get('./postId/likes', auth, controllerLikes.getAllLikes);*/
 
 //exporter les routes pour qu'elles soient utilisable partout
 module.exports = router

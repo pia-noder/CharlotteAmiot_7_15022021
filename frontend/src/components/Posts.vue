@@ -8,7 +8,7 @@
 
                 <BtnEdit
                     :post="post"
-                    :isAdmin="userStatus == 'Admin'"
+                    :isAdmin="userStatus == 'admin'"
                     :isUser="userID == post.id_user"
                  />
 
@@ -21,12 +21,11 @@
             </div>
 
             <div class="post-footer">
-                <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /><p>{{ }}</p></span>
-                <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost(index)"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
+                <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /></span>
+                <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
             </div> 
-            <CommentsList v-if="post.commentsAreVisible" 
+            <CommentsList v-if="this.commentsAreVisible" 
             :post="post.id_post" 
-            :comments="post.comment"
             />
             
         </div>
@@ -34,10 +33,9 @@
 </template>
 
 <script>
+import ServicePosts from '@/service/ServicePosts'
 
 import CommentsList from '@/components/CommentsList.vue'
-import ServicePosts from '@/service/ServicePosts'
-//import ServiceComments from '@/service/ServiceComments'
 import BtnEdit from '@/components/BtnEdit'
 
 
@@ -53,24 +51,27 @@ export default {
             //posts: [],
             userStatus: localStorage.getItem('userStatus'),
             userID: localStorage.getItem('userID'),
+            commentsAreVisible: false,
             isLiked: false,
         }
     },
     async created (){
-        await this.LikeStatus(this.post);
-        
-        //await this.getOneOfAllComments(this.$vnode.index);
+        await this.LikeStatus(this.post);     
     },
- 
+
 
     methods: {
+        displayComments(){
+            if(this.commentsAreVisible == true){
+                this.commentsAreVisible = false
+            } else {
+                this.commentsAreVisible = true
+            }
+        },
 
         async LikeStatus(post){
             const userData = JSON.parse(localStorage.getItem('userData'));
-
-            //Récupérer isLiked pour pouvoir le modifier
-            
-                    
+        
                 const postInfosObj = {
                     "id_user" : userData.id
                 }
@@ -78,7 +79,6 @@ export default {
                 const getLikesStatut =  ServicePosts.likesStatusInfo(post.id_post, postInfosObj);
                
                 getLikesStatut.then((response) => {
-                     console.log(response)
                     if(response.data && response.data.length > 0){
                     this.isLiked = true;
                     }  
@@ -86,51 +86,38 @@ export default {
            
         },
 
-        /*async getOneOfAllComments() {
-            
-            this.posts.forEach( post => {
-                const getFistComment = ServiceComments.getOneOfAllComments(post.id_post);
-
-                getFistComment.then((response) => {
-                    
-                    post.comment = response.data[0];
-                    post.count = response.data[1][0]
-                })
-            })
-        },*/
-
-       async onLikePost(index){
+       async onLikePost(){
            const userData = JSON.parse(localStorage.getItem('userData'));
             
             if(!this.isLiked){
 
-                if(this.posts[index].likes === (null || NaN)){
-                    this.posts[index].likes = 1;
-                    this.posts[index].isLiked = true;
+                if(this.post.likes === (null || NaN)){
+                    this.post.likes = 1;
+                    this.post.isLiked = true;
 
-                    const post = {"likes" : this.posts[index].likes,
+                    const post = {"likes" : this.post.likes,
                         "id_user" : userData.id};
 
-                    await ServicePosts.likePost(this.posts[index].id_post, post)
+                    await ServicePosts.likePost(this.post.id_post, post)
 
                 }else{
-                     this.posts[index].likes += 1;
-                    this.posts[index].isLiked = true;
-                    const post = {"likes" : this.posts[index].likes,
+                     this.post.likes += 1;
+                    this.isLiked = true;
+                    const post = {"likes" : this.post.likes,
                         "id_user" : userData.id};
-                    await ServicePosts.likePost(this.posts[index].id_post, post)
+                    await ServicePosts.likePost(this.post.id_post, post)
                 }
                    
 
             } else {
-                this.posts[index].likes = this.posts.likes -= 1;
-                if(isNaN(this.posts[index].likes)){
-                    this.posts[index].likes = 0
-                    const post = {"likes" : this.posts[index].likes,
+                this.post.likes = this.posts.likes -= 1;
+                if(isNaN(this.post.likes)){
+                    this.post.likes = 0
+                    const post = {"likes" : this.post.likes,
                         "id_user" : userData.id};
-                    await ServicePosts.dislikePost(this.posts[index].id_post, post)
+                    await ServicePosts.dislikePost(this.post.id_post, post)
                 }
-                this.posts[index].isLiked = false;
+                this.isLiked = false;
             }
             
         },  
