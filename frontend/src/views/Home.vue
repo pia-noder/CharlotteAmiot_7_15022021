@@ -4,11 +4,15 @@
     <div class="main">
       <MenuLateral class="menuLateral" />
       <div class="publication">
-        <CreatePost @rerenderComponent="forceRerender" class="bloc-post displayPost" :key="componentKey"/>
+        <CreatePost  class="bloc-post" />
 
         <div v-if="posts[0]" class="if-post">
-          <div class="postList" v-for="post in posts" :post="post"  :key="post.id_post">
-            <Post  class="bloc-post post" :post="post" />
+          <div v-for="post in posts" :post="post"  :key="post.id">
+            <Post  
+              class="bloc-post post" 
+              :post="post"
+              :user="user" 
+              />
             
           </div>
         </div>
@@ -39,25 +43,25 @@ export default {
     CreatePost,
     Post,
   },
-  created() {
-        this.$store.dispatch('loadPosts');
+  async beforeCreate() {
+    await  this.$store.dispatch('loadPosts');
+    await  this.$store.dispatch('loadUser', this.$route.params.userId );
     },
-  data(){
-    return{
-      userId: this.$route.params.userId,
-      componentKey: 0,
-    }
-  },
   computed: {
         posts() {
             return this.$store.state.posts;
         },
-    },
-  methods:{
-   forceRerender() {
-      this.componentKey += 1;
+        user(){
+      return this.$store.state.user;
+      }
+    },  
+  data(){
+    return{
+      userId: this.$route.params.userId,
     }
   },
+  
+
  
 }
 </script>
@@ -68,29 +72,42 @@ export default {
 .main{
   display: flex;
 
-      .menuLateral{
-        
-        flex: 1;
-        
-        
-      }
       .publication {
-        flex: 3;
-        
+           margin-top: 15vh;
+           width: 100%;
+        .bloc-post {
+          margin-top: 30px;
+          margin: auto;
+          width: 35%;
+        }
+        .post{
+          margin-top:23px;
+        }
+        .text-default__post{
+        color: rgb(229, 115, 115);
+        text-align: center;
         margin-top: 30px;
-        margin-left: 1.5%;
+
+        font-size: 1.5em;
+      }
+
+      }
+  
+}
+
+@media (max-width:900px){
+ .main{
+      .publication {
 
         .bloc-post {
-          width: 50%;
+          margin: auto;
+          width: 85%;
         }
         .post{
           margin-top:23px;
         }
       }
-      .text-default__post{
-        color: rgb(229, 115, 115);
-        margin: 20px 0 0 3%;
-        font-size: 1.5em;
-      }
+  }
+    
 }
 </style>

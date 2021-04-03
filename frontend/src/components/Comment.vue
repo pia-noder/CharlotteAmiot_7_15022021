@@ -2,14 +2,10 @@
   <div class="comment" >
     <div class="bloc-comment" >
       <div class="profile">
-        <router-link
-        :to="{ name: 'UserProfile', params: { userId: comment.comments_user } }">
-          <img class="user-image" :src="comment.imageURL" alt="photo de profile">
-        </router-link>
-        <router-link
-          :to="{ name: 'UserProfile', params: { userId: comment.comments_user } }">
-          <p>{{ comment.user_name }}</p>
-        </router-link>
+        
+        <img class="user-image" :src="comment.imageURL" alt="photo de profile">
+        <p>{{ comment.user_name }}</p>
+        
       </div>
       
       <div class="comment-block">
@@ -58,11 +54,23 @@ props:[ 'post', 'comment' ],
 
 <style lang="scss">
 .bloc-comment{
-  border-top: 2px solid cornflowerblue;
+  
   margin: 5px 5px 0 5px;
+  padding: 5px;
+  background: #f0efeb;
+  border-radius: 13px;
+
   .profile{
     display: flex;
     justify-content: left;
+    .user-image{
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+    }
+    p{
+      margin-left:15px;
+    }
   }
   .comment-block{
     display: flex;
@@ -76,15 +84,30 @@ props:[ 'post', 'comment' ],
       cursor: pointer;
     }
   }
-  .user-image{
-  width: 7%;
-}
+
 .fileURL{
   width: 50%;
   .fileContenu{
     width: 60%;
+    margin-top: 15px;
   }
 }
 }
+@media (max-width: 400px){
+ 
+ .bloc-comment{
+  font-size:0.7em;
 
+
+    .profile{
+      display: flex;
+      justify-content: left;
+
+      .user-image{
+        width: 20px;
+        height: 20px;
+      } 
+    }
+  }
+}
 </style>

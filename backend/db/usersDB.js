@@ -6,11 +6,11 @@ dotenv.config();
 
 //Use connection pooling to improve the performance of MySQL and not overload the MySQL server with too many connections. 
 const pool = mysql.createPool({
-    connectionLimit : 10,
-    host            : 'localhost',
-    user            : 'groupomania',
-    password        : 'GM21/02P7_',
-    database        : 'groupomania',
+    connectionLimit : 20,
+    host            : process.env.BdD_HOST,
+    user            : process.env.BdD_USER,
+    password        : process.env.BdD_PASSWORD,
+    database        : process.env.BdD_DATABASE,
     multipleStatements: true
 });
 
@@ -69,6 +69,19 @@ groupomaniadb.updateUser = (userId, username, poste, description, imageURL) => {
     });
 }
 
+groupomaniadb.getOneUser = (userId) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Users WHERE id = ?`, [userId], (error, results) => {
+            if(error) {
+                console.log('connexion DB pas OK !');
+                return reject(error);
+            }
+                console.log('connexion DB OK !')
+                return resolve(results);
+        });
+    });
+}
+
 groupomaniadb.deleteUser = (user_id) => {
     console.log('dans la BDD')
     console.log(user_id);
@@ -80,7 +93,9 @@ groupomaniadb.deleteUser = (user_id) => {
             }
                 console.log('connexion DB OK !')
                 return resolve(results);
-        })
-    })
+        });
+    });
 }
+
+
 module.exports = groupomaniadb;

@@ -2,9 +2,9 @@
     <div class="userPostBloc">
         
         <div class="post-header">
-            <img v-if="user.imageURL" class="user-image" :src="user.imageURL" alt="photo de profile">
+            <img v-if="user[0].imageURL" class="user-image" :src="user[0].imageURL" alt="photo de profile">
             <p>{{ post.username }}</p>
-            <p>{{ post.date_publication }}</p>
+            <p class="publishedDate">{{ post.date_publication }}</p>
             <BtnEdit
                 :post="post"
                 :isAdmin="userStatus == 'Admin'"
@@ -18,11 +18,12 @@
         </div>
 
         <div class="post-footer">
-            <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /></span>
+            <span class="icon-comment"><font-awesome-icon @click="displayComments()" :icon="['fas', 'comment-dots']" /></span>
             <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
         </div> 
         <CommentsList v-if="this.commentsAreVisible" 
             :post="post.id" 
+            :user="user"
         />
 
     </div>
@@ -42,11 +43,10 @@ export default {
         BtnEdit,
 
     },
-    props:['post'],
+    props:['post', 'user'],
 
     data () {
         return {
-            user:{},
             userStatus: localStorage.getItem('userStatus'),
             userID: localStorage.getItem('userID'), 
             commentsAreVisible: false,
@@ -54,8 +54,8 @@ export default {
         }
     },
 
-    async created (){
-        await this.LikeStatus(this.post);     
+    created (){
+        this.LikeStatus(this.post);     
     },
     
     methods: {
@@ -67,14 +67,14 @@ export default {
             }
         },
 
-        async LikeStatus(post){
-            const userData = JSON.parse(localStorage.getItem('userData'));
-        
+       async LikeStatus(post){
+            
+            console.log(this.userID)
                 const postInfosObj = {
-                    "id_user" : userData.id
+                    "id_user" : this.userID
                 }
 
-                const getLikesStatut =  ServicePosts.likesStatusInfo(post.id_post, postInfosObj);
+                const getLikesStatut =  ServicePosts.likesStatusInfo(post.id, postInfosObj);
                
                 getLikesStatut.then((response) => {
                     if(response.data && response.data.length > 0){
@@ -85,7 +85,7 @@ export default {
         },
 
        async onLikePost(){
-           const userData = JSON.parse(localStorage.getItem('userData'));
+           const userId = JSON.parse(localStorage.getItem('userID'));
             
             if(!this.isLiked){
 
@@ -94,27 +94,26 @@ export default {
                     this.post.isLiked = true;
 
                     const post = {"likes" : this.post.likes,
-                        "id_user" : userData.id};
+                        "id_user" : userId};
 
-                    await ServicePosts.likePost(this.post.id_post, post)
+                    await ServicePosts.likePost(this.post.id, post)
 
                 }else{
-                     this.post.likes += 1;
+                    this.post.likes += 1;
                     this.isLiked = true;
                     const post = {"likes" : this.post.likes,
-                        "id_user" : userData.id};
-                    await ServicePosts.likePost(this.post.id_post, post)
+                        "id_user" : userId};
+                    await ServicePosts.likePost(this.post.id, post);
                 }
                    
 
             } else {
-                this.post.likes = this.posts.likes -= 1;
-                if(isNaN(this.post.likes)){
-                    this.post.likes = 0
-                    const post = {"likes" : this.post.likes,
-                        "id_user" : userData.id};
-                    await ServicePosts.dislikePost(this.post.id_post, post)
-                }
+                this.post.likes -= 1;
+                
+                const post = {"likes" : this.post.likes,
+                        "id_user" : userId};
+                await ServicePosts.dislikePost(this.post.id, post)
+                
                 this.isLiked = false;
             }
             
@@ -128,19 +127,19 @@ export default {
 
 <style lang="scss" >
     .userPostBloc{
-        width: 50%;
         border: 2px solid #E57373;
         border-radius: 13px;
-        margin: 10px 0 10px 0;
 
         .post-header{
             display: flex;
             justify-content: space-between;
+            min-height: 20px;
             margin: 19px 30px 0 19px;
             position: relative;
 
             .user-image{
-                width: 5%;
+                width: 40px;
+                height: 40px;
                 margin-right: 5%;
                 border-radius: 100%;
             }
@@ -148,16 +147,6 @@ export default {
             .icon-dots{
                 cursor: pointer;
             }
-
-            .displayOption{
-                position: absolute;
-                right: -150px;
-            }
-
-            .displayNone{
-                display: none;
-            }
-            
             
         }
         .post-content{
@@ -184,4 +173,31 @@ export default {
             }
         }
     }
+@media (max-width: 400px){
+    .userPostBloc{
+        border: 2px solid #E57373;
+        border-radius: 13px;
+
+        .post-header{
+            display: flex;
+            justify-content: space-between;
+            min-height: 20px;
+            margin: 19px 30px 0 19px;
+            position: relative;
+
+            .user-image{
+                width: 20px;
+                margin-right: 5%;
+                border-radius: 100%;
+            }
+            .publishedDate{
+                display:none;
+            }
+            .icon-dots{
+                cursor: pointer;
+            }
+            
+        }
+}
+}
 </style>

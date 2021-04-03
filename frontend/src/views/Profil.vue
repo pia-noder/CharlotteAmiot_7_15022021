@@ -5,9 +5,9 @@
     <main>
       <MenuLateral class="menuLateral" />
       <div class="blocProfil">
-        <DisplayProfil />
-        <div v-for="post in posts"  :key="post.id">
-          <UserPosts class="userPosts" :post="post" />
+        <DisplayProfil :user="user" />
+        <div class="loop" v-for="post in posts"  :key="post.id">
+          <UserPosts class="userPosts" :post="post" :user="user" />
         </div>
       
         
@@ -35,32 +35,53 @@ export default {
     DisplayProfil,
     UserPosts
   },
-  async created (){
-        //await this.prepareDynamicList()
-        this.user = JSON.parse(localStorage.getItem('userData'));
-        this.$store.dispatch('loadUserPosts',this.$route.params.userId);
+  async beforeCreate (){
+    await this.$store.dispatch('loadUserPosts',this.$route.params.userId);
+    //this.$store.dispatch('loadUser', this.$route.params.userId );
     },
-    computed: {
-        posts(){
-            return this.$store.state.userPosts;
-        }
+  computed: {
+    posts(){
+      return this.$store.state.userPosts;
     },
+    user(){
+      return this.$store.state.user;
+      }
+  },
+
 }
 </script>
 
 <style lang='scss'>
 
   main{
-    display: flex;
-    margin-top: 10px ;
+    margin-top: 15vh ;
 
     .blocProfil {
-      flex: 3;
-      width: 50%;
-      .userPosts{
-        width: 75%;
+      width: 100%;
+
+      .loop{
+        margin-top: 30px;
+
+        .userPosts{
+        width: 50%;
+        margin: auto;
+        }
+      }  
+    }
+  }
+
+  @media (max-width: 900px){
+  main{
+
+    .blocProfil {
+      
+      .loop{
+
+        .userPosts{
+          width: 80%;
+        }
       }
     }
-
   }
+}
 </style>

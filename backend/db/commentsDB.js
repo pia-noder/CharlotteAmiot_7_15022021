@@ -6,10 +6,10 @@ dotenv.config();
 //Use connection pooling to improve the performance of MySQL and not overload the MySQL server with too many connections. 
 const pool = mysql.createPool({
     connectionLimit : 20,
-    host            : 'localhost',
-    user            : 'groupomania',
-    password        : 'GM21/02P7_',
-    database        : 'groupomania',
+    host            : process.env.BdD_HOST,
+    user            : process.env.BdD_USER,
+    password        : process.env.BdD_PASSWORD,
+    database        : process.env.BdD_DATABASE,
     multipleStatements: true
 });
 

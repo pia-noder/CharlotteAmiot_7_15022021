@@ -32,7 +32,7 @@ export default {
 <style lang="scss" scoped>
 
     .displayOption{
-
+        background-color: white;
         padding: 5px;
         box-shadow: 1px 2px 13px 5px rgba(0,0,0,0.45);
 

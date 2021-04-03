@@ -65,7 +65,7 @@ exports.login = async (req, res, next) =>{
             token: jwt.sign(
               {userId: user[0].id},//pour être sûr que la requête correspond bien à cet userId
               'RANDOM_TOKEN_SECRET',
-              {expiresIn: '1h'}
+              {expiresIn: '10h'}
             )
           })
       }).catch( error => res.status(400).json({ error }))
@@ -89,6 +89,14 @@ exports.getAllPosts = async ( req, res ) => {
     res.status(401).json({ error })
   }
 }
+exports.getOneUser = async (req, res) => {
+  try {
+    let results = await db.getOneUser(req.params.id);
+    res.status(201).json(results);
+  } catch (error) {
+    res.status(401).json({ error })
+  }
+}
 
 exports.updateUser = async (req, res ) => {
   console.log(req.body.multimedia, req.file)
@@ -96,13 +104,10 @@ exports.updateUser = async (req, res ) => {
     const imageURL = req.file ? `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}` : req.body.multimedia;
 
   try {
-    console.log(req.body)
     await db.updateUser(req.params.id, req.body.username, req.body.poste, req.body.description, imageURL);
     let results = await db.getOneUser(req.params.id);
-    console.log(results)
     res.status(201).json(results);
   } catch (error) {
-    console.log(error);
     res.status(401).json({ error })
   }
 }

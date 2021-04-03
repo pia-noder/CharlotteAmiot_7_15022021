@@ -87,24 +87,25 @@ export default {
     methods: {
        async onSubmitRegisterForm () {
             console.log('Envoie du formulaire signIn correctement déclenché');
-            let response = await ServiceAuth.signup({
+            await ServiceAuth.signup({
                 username: this.username,
                 email: this.email,
                 password: this.password,
                 poste: '',
                 description: '',
                 imageURL: ''
-            });
+            }).then(() => {
+                this.$router.push({
+                        name: 'LogIn', 
+                        
+                    });
+            })
+            .catch(error => {
+                console.log(error)
+                this.messageErreur = 'Utilisateur déjà existant.'
+            })
             
-            localStorage.setItem('userData',JSON.stringify(response.data.user))
-            localStorage.setItem('userID', response.data.userId)
-            const userId = localStorage.getItem('userID');
-            this.$router.push({
-                    name: 'Home', 
-                    params: { userId } 
-            });
-        
-            //console.log('Utilisateur correctement crée',response);
+            
         }
     }
 }

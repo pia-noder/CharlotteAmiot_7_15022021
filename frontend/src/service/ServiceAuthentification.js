@@ -14,8 +14,8 @@ export default {
         return API().put('auth/' + userId, datas )
     },
 
-    getOneUSer(){
-        return API().get('auth/user')
+    getOneUser(userId){
+        return API().get('auth/' + userId);
     },
     deleteUser(userId){
         console.log(userId)

@@ -1,4 +1,5 @@
 const db = require('../db/postsDB');
+const db = require('../db/commentsDB');
 const fs = require('fs');
 
 
@@ -58,6 +59,7 @@ exports.deleteOnePost = async (req, res) => {
                     console.log(error)
                 }
                 db.deleteOnePost(req.body.id_post);
+                db.deleteAssociedComments(req.body.id_post)
                 res.status(200).json({message: 'Post correctement supprimé'})
                 })
            } else {
@@ -79,8 +81,7 @@ exports.deleteOnePost = async (req, res) => {
 
 exports.likeOnePost = async(req, res ) => {
     try {
-    const results = await db.likeOnePost(req.params.id, req.body.likes, req.body.id_user);
-        
+    await db.likeOnePost(req.params.id, req.body.likes, req.body.id_user);
         res.status(200).json({message: 'Modication du like correctement effectué'})
     } catch (error) {
         console.log(error);
@@ -90,7 +91,8 @@ exports.likeOnePost = async(req, res ) => {
 
 exports.dislikeOnePost = async(req, res ) => {
     try {
-        const results = await db.dislikeOnePost(req.params.id, req.body.likes, req.body.id_user);
+        await db.dislikeOnePost(req.params.id, req.body.likes, req.body.id_user);
+
         res.status(200).json({message: 'Suppression like correctement effectué'})
     } catch (error) {
         console.log(error);

@@ -22,17 +22,17 @@ export default {
         return API().delete('posts/:id', { data: { id_post: id } });
     },
     getUserPosts(userId){
-        return API().get('auth/'+ userId)             
+        return API().get('auth/'+ userId + '/posts')             
     },
 
     //Gestion du système de likes & dislikes
-    likePost(id_post, likes, id_user){
-        return API().put('posts/' + id_post+ '/likes', likes, id_user);
+    likePost(id_post, post ){
+        return API().put('posts/' + id_post+ '/likes', post);
         
     },
 
-    dislikePost(id_post, likes, id_user){
-        return API().put('posts/' + id_post+ '/dislikes', likes, id_user);
+    dislikePost(id_post, post){
+        return API().put('posts/' + id_post+ '/dislikes', post);
         
     },
 

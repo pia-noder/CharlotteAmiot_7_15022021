@@ -2,13 +2,13 @@
   <div class="updateProfile">
       <form id="formUpdateProfile" @submit.prevent="onSubmitProfile">
           <label for="username">Nom d'utilisateur</label>
-          <input v-model="user.username" @click="updateValue" type="text" name="username"  >
+          <input v-model="user[0].username" @click="updateValue" type="text" name="username"  >
 
           <label for="poste">Poste occupé</label>
-          <input v-model="user.poste" @click="updateValue" type="text" name="Poste" >
+          <input v-model="user[0].poste" @click="updateValue" type="text" name="Poste" >
 
           <label for="description">Description</label>
-          <input v-model="user.description" @click="updateValue" type="text" name="description">
+          <input v-model="user[0].description" @click="updateValue" type="text" name="description">
 
           <label for="imageProfile">Choisir une image de profile</label>
           <input type="file" 
@@ -21,47 +21,41 @@
 </template>
 
 <script>
-import ServiceAuth from '@/service/ServiceAuthentification'
+//import ServiceAuth from '@/service/ServiceAuthentification'
 
 export default {
     name: 'updateProfile',
-
-    data(){
-        return{
-         
-            user:{}
-        }
-    },
+    props:['user'],
 
     methods:{
          
         updateValue(){
-            if(!this.user.username){
-              this.user = JSON.parse(localStorage.getItem('userData'));  
+            if(!this.user[0].username){
+              this.user[0] = JSON.parse(localStorage.getItem('userData'));  
             }
              
         },
-        
-       async onSubmitProfile(){
-            console.log(this.$route.params.userId)
-            const formData = new FormData();
-            formData.append('username', this.user.username)
-            formData.append('poste', this.user.poste)
-            formData.append('description', this.user.description)
-            formData.append('multimedia', this.user.imageURL)
-            /*for(let fd of formData.entries()){
-                console.log(fd[0] + ' , ' + fd[1])
-            }*/
-           let updatedProfile =  await ServiceAuth.modifyUser(this.$route.params.userId, formData);
-           console.log(updatedProfile);
-           localStorage.setItem('userData', updatedProfile)
-            this.message = 'formData Uploaded !!! Mise à jour des données utilisateur'
-        },
+
         onSelectImage(event){
          
-            this.user.imageURL = event.target.files[0];
+            this.user[0].imageURL = event.target.files[0];
             console.log(event.target.files[0])
-        }
+        },
+
+        onSubmitProfile(){
+            const formData = new FormData();
+            formData.append('username', this.user[0].username)
+            formData.append('poste', this.user[0].poste)
+            formData.append('description', this.user[0].description)
+            formData.append('multimedia', this.user[0].imageURL)
+            for(let fd of formData.entries()){
+                console.log(fd[0] + ' , ' + fd[1])
+            }
+            const userId = this.$route.params.userId
+            this.$store.dispatch('modifyUser', {userId, formData});
+            
+            this.$emit('close-modal');
+        }, 
 
     }
 }

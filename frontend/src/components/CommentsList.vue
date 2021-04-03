@@ -13,7 +13,7 @@
 
     <button
       v-if="count > 1 && !allCommentsDisplayed"
-      @click="getAllComments(post)"
+      @click="getAllComments(post.id)"
     >
 
       <span v-if="count > 1">Afficher {{ count - 1 }} autres commentaires</span>
@@ -21,9 +21,11 @@
 
     </button>
 
-    <CreateComments  
+    <CreateComments 
+      :user="user" 
       :post="post" 
       @comment-created="pushNewCommentInComments"
+      
     />
 
   </div>
@@ -42,12 +44,11 @@ name: 'CommentsList',
     CreateComments,
     Comment,
   },
-  props:['post'],
+  props:['post', 'user'],
 
-created() {
-       //this.$store.dispatch('loadOneComments', this.post);
-      this.getOneOfAllComments(this.post);
-    },
+  created() {
+        this.getOneOfAllComments(this.post.id);
+      },
 
   data () {
         return {
@@ -66,7 +67,7 @@ created() {
 
       getFistComment.then((response) => {
         this.comments = response.data[0];
-        this.count = response.data[1][0].count
+        this.count = response.data[1][0].count;
       })    
     },
 
@@ -74,7 +75,6 @@ created() {
       ServiceComments.getAllComments(post).then(response => {
         this.comments = response.data;
       });
-      //this.$store.dispatch('loadComments', this.post);
       this.allCommentsDisplayed = true;
     },
 

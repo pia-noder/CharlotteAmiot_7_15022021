@@ -2,20 +2,11 @@
 
   <div class="menuLateral">
       
-      <router-link class="link" 
-      :to="{
-            name: 'Notifications',
-            params: { userId }}">
-        <font-awesome-icon class="icon-trash" icon="bell" />
-        Notifications</router-link>
-      <router-link class="link" 
-      :to="{
-            name: 'Newsletter',
-            }">
-        Newsletter</router-link>
-      <button class="btnModalPost" @click="openModal">Publier</button>
+      
+      
+      <button title="Publier Poste" class="btnModalPost" @click="openModal"><font-awesome-icon class="icon-trash" icon="pencil-alt" /></button>
       <div id="modal">
-          <CreatePost class="modal-content" ></CreatePost>
+          <CreatePost @close-modal='closeModal' class="modal-content" ></CreatePost>
       </div>
   </div>
 
@@ -24,8 +15,8 @@
 <script>
 
 window.onclick = function(event) {
-    
 var modal = document.getElementById("modal");
+    console.log('click window')
   if (event.target == modal) {
     modal.style.display = "none";
   }
@@ -46,8 +37,12 @@ export default {
     methods: {
         openModal () {
             var modal = document.getElementById("modal");
-           modal.style.display = "block";
+            modal.style.display = "block";
         },
+        closeModal(){
+            var modal = document.getElementById("modal");
+            modal.style.display = "none";
+        }
     },
 }
 </script>
@@ -56,29 +51,30 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .menuLateral {
-    display: flex;
-    flex-direction: column;
-
-    margin-top: 95px;
-
-    .link {
-        margin-left: 25%;
-        font-size: 1.5rem;
-        font-family: 'Montserrat', sans-serif;
-    }
+    position: fixed;
+    right:20px;
+    bottom: 20px ;
 
     .btnModalPost {
-        width: 25%;
+        cursor: pointer;
+        height: 50px;
+        width: 50px;
         margin-left: 25%;
         padding: 10px 0px;
-        border-radius: 13px;
+        border: none;
+        border-radius: 100%;
+        background-color: rgb(229, 115, 115);
+        color: white;
+        &:hover{
+            background-color: darken(rgb(229, 115, 115), 20%);
+        }
     }
     #modal {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
+        z-index: 10; /* Sit on top */
         left: 0;
-        top: 0;
+        top: 10px;
         width: 100%; /* Full width */
         height: 100%; /* Full height */
         overflow: auto; /* Enable scroll if needed */
@@ -86,6 +82,7 @@ export default {
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 
         .modal-content {
+            z-index: 20;
                 background-color: #fefefe;
                 margin: 15% auto; /* 15% from the top and centered */
                 padding: 20px;

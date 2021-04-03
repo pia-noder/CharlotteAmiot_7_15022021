@@ -2,7 +2,7 @@
   <div class="createPost">
 
     <div class="blocImg">
-        <img class="imgProfile" :src="userData.imageURL" alt="icon du profile"> 
+        <img class="user-image" :src="user[0].imageURL" alt="icon du profile"> 
     </div>
 
     <div class="bloc-create">
@@ -13,6 +13,7 @@
             <div id="previewFile">
                 <img v-if="showImage" id="imagePreview" class="image-preview" src="" alt="pré-visualisation du fichier" />
             </div>
+            <p v-if="message" class="">{{message}}</p>
             <div class="footer">
                 <button
                     aria-label="Intégrer un fichier"
@@ -48,6 +49,9 @@
 
 export default {
     nom: 'CreatePost',
+    async beforeCreate() {
+        this.$store.dispatch('loadUser', this.$route.params.userId );
+    },
 
     data () {
         return {
@@ -55,13 +59,15 @@ export default {
                 date_publication:'',
                 contenu: '',
                 fileURL: null,
-                input: null,
             
             },
-            userData: JSON.parse(localStorage.getItem('userData')),
-
             message: '',
             showImage: false
+        }
+    },
+    computed: {
+        user() {
+          return this.$store.state.user;
         }
     },
 
@@ -87,27 +93,39 @@ export default {
         chooseFile () {
             this.$refs.file.click()
         },
-        previewFile(){
-            
-        },
 
       async onSubmitPost () {
             const userId = localStorage.getItem('userID');
-            const formData = new FormData();
-         
-            formData.append('contenu', this.postData.contenu);
-            formData.append('userId', userId);
-            formData.append('multimedia', this.postData.fileURL);
-            /*for(let fd of formData.entries()){
-                console.log(fd[0] + ' , ' + fd[1])
-            }*/
-            try {
-                this.$store.dispatch('createPosts', formData)
-                
-            } catch (error) {
-                console.log(error);
-                this.message = 'Something get wrong with formData'
+            if(this.postData.contenu || this.postData.fileURL){
+                const formData = new FormData();
+            
+                formData.append('contenu', this.postData.contenu);
+                formData.append('userId', userId);
+                formData.append('multimedia', this.postData.fileURL);
+                /*for(let fd of formData.entries()){
+                    console.log(fd[0] + ' , ' + fd[1])
+                }*/
+                if(formData)
+                try {
+                    this.$store.dispatch('createPosts', formData)
+                    this.$emit('close-modal');
+                    this.postData.contenu = '';
+                    this.postData.fileURL = '';
+                    let imagePreview = document.getElementById('imagePreview'); 
+                    imagePreview.setAttribute("src", '');
+                    this.showImage = false;
+                   
+                    
+                } catch (error) {
+                    console.log(error);
+                    this.message = 'Il y a un problème avec formData'
+                }
+            } else {
+                alert('Veuillez rentrer des informations avant de publier un poste');
+               
+                     
             }
+            
         }
     }
 }
@@ -124,33 +142,36 @@ export default {
 
     .blocImg{
 
-        width: 10%;
+        width: 15%;
+        
         margin: 10px 0 0 10px;
-        .imgProfile{
-            width: 100%; 
-            margin: 0px;
+        .user-image{
+            width: 40px; 
+            height: 40px;
+            border-radius: 100%;
         }
     }
     .bloc-create{
-        width: 80%;
+        width: 100%;
+        form{
+            width: 100%;
+        }
     }
     
     .contenu{
         width:85%;
-        height: 90%;
         font-size: 15px;
 
         textarea{
             width: 100%;
-            height: 70%;
 
-            margin: 10px 0 0 15px;
+            margin: 10px 0 0 0;
             border: none;
         }
     
     }
         .image-preview{
-        width: 100%;
+        width: 50%;
     }
 
     .footer{
@@ -174,7 +195,7 @@ export default {
 
         .btnPublier{
 
-        width: 25%;
+        width: 35%;
         display: flex;
         align-items: flex-end;
 
@@ -188,10 +209,64 @@ export default {
             background: linear-gradient(270deg, rgb(229, 115, 115) 30%, rgba(229, 115, 115, 0.3));
             border-radius: 10px;
             border: none;
+
+            cursor: pointer;
         }
     }
-    
+}
+@media (max-width:900px){
+    .main{
+        .bloc-post {
+          width: 100%;
+        }
+        .footer{
 
+            .btnPublier{
+
+            width: 35%;
+            display: flex;
+            align-items: flex-end;
+
+                button {
+
+                    width: 70%;
+
+                    margin: 0 0 10px 10%;
+                    padding: 10px 15px 10px 15px;
+
+                    background: linear-gradient(270deg, rgb(229, 115, 115) 30%, rgba(229, 115, 115, 0.3));
+                    border-radius: 10px;
+                    border: none;
+
+                    cursor: pointer;
+                }
+            }
+        }       
     }
-    
+}
+@media (max-width: 450px){
+    .footer{
+
+        .btnPublier{
+
+        width: 45%;
+        display: flex;
+        align-items: flex-end;
+
+        button {
+
+            width: 80%;
+
+            margin: 0 0 10px 10%;
+            padding: 10px 15px 10px 15px;
+
+            background: linear-gradient(270deg, rgb(229, 115, 115) 30%, rgba(229, 115, 115, 0.3));
+            border-radius: 10px;
+            border: none;
+
+            cursor: pointer;
+        }
+    }
+    }
+}
 </style>

@@ -2,9 +2,12 @@
     
         <div class="postBloc" >
             <div class="post-header">
-                <img class="user-image" :src="post.imageURL" alt="photo de profile">
-                <p>{{ post.username }}</p>
-                <p>{{ post.date_publication }}</p>
+                <div class="header-left">
+                    <img class="user-image" :src="post.imageURL" alt="photo de profile">
+                    <p>{{ post.username }}</p>
+                    <p class="publishedDate">{{ moment(post.date_publication).fromNow() }}</p>  
+                </div>
+                
 
                 <BtnEdit
                     :post="post"
@@ -25,7 +28,8 @@
                 <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
             </div> 
             <CommentsList v-if="this.commentsAreVisible" 
-            :post="post.id_post" 
+            :post="post" 
+            :user="user"
             />
             
         </div>
@@ -33,6 +37,7 @@
 </template>
 
 <script>
+
 import ServicePosts from '@/service/ServicePosts'
 
 import CommentsList from '@/components/CommentsList.vue'
@@ -45,18 +50,17 @@ export default {
         BtnEdit,
 
     },
-    props:['post'],
+    props:['post', 'user'],
     data () {
         return {
-            //posts: [],
             userStatus: localStorage.getItem('userStatus'),
             userID: localStorage.getItem('userID'),
             commentsAreVisible: false,
             isLiked: false,
         }
     },
-    async created (){
-        await this.LikeStatus(this.post);     
+    created (){
+        this.LikeStatus(this.post);     
     },
 
 
@@ -69,14 +73,12 @@ export default {
             }
         },
 
-        async LikeStatus(post){
-            const userData = JSON.parse(localStorage.getItem('userData'));
-        
+        LikeStatus(post){
                 const postInfosObj = {
-                    "id_user" : userData.id
+                    "id_user" : this.userID
                 }
 
-                const getLikesStatut =  ServicePosts.likesStatusInfo(post.id_post, postInfosObj);
+                const getLikesStatut =  ServicePosts.likesStatusInfo(post.id, postInfosObj);
                
                 getLikesStatut.then((response) => {
                     if(response.data && response.data.length > 0){
@@ -87,7 +89,7 @@ export default {
         },
 
        async onLikePost(){
-           const userData = JSON.parse(localStorage.getItem('userData'));
+           const userId = JSON.parse(localStorage.getItem('userID'));
             
             if(!this.isLiked){
 
@@ -96,33 +98,31 @@ export default {
                     this.post.isLiked = true;
 
                     const post = {"likes" : this.post.likes,
-                        "id_user" : userData.id};
+                        "id_user" : userId};
 
-                    await ServicePosts.likePost(this.post.id_post, post)
+                    await ServicePosts.likePost(this.post.id, post);
 
                 }else{
-                     this.post.likes += 1;
+                    this.post.likes += 1;
                     this.isLiked = true;
                     const post = {"likes" : this.post.likes,
-                        "id_user" : userData.id};
-                    await ServicePosts.likePost(this.post.id_post, post)
+                        "id_user" : userId};
+                    await ServicePosts.likePost(this.post.id, post)
                 }
                    
 
             } else {
-                this.post.likes = this.posts.likes -= 1;
-                if(isNaN(this.post.likes)){
-                    this.post.likes = 0
-                    const post = {"likes" : this.post.likes,
-                        "id_user" : userData.id};
-                    await ServicePosts.dislikePost(this.post.id_post, post)
-                }
+                this.post.likes -= 1;
+                
+                const post = {"likes" : this.post.likes,
+                        "id_user" : userId};
+                await ServicePosts.dislikePost(this.post.id, post)
+                
                 this.isLiked = false;
             }
             
         },  
     },
-   
    
 }
 </script>
@@ -136,12 +136,25 @@ export default {
         .post-header{
             display: flex;
             justify-content: space-between;
-            margin: 19px 30px 0 19px;
-            position: relative;
-            .user-image{
-                width: 5%;
-                margin-right: 5%
+            margin: 10px 30px 0 10px;
+            
+            .header-left{
+                display: flex;
+                width: 50%;
+                justify-content: space-between;
+                .user-image{
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 5%;
+                    border-radius:100%;
+                } 
+                .publishedDate{
+                    padding-top: 4px;
+                    font-size: 0.7em;
+                    font-weight: 300;
+                }
             }
+            
             .icon-dots{
                 cursor: pointer;
             }
@@ -156,11 +169,12 @@ export default {
             margin: 10px 28px 0 10%;
 
             .imgContenu{
-                width: 100%;
+                width: 80%;
+                margin-top: 30px;
             }
         }
         .post-footer{
-            margin: 10px 28px 22px ;
+            margin: 10px 28px 10px ;
 
             .icon-heart{
                 cursor: pointer;
@@ -183,4 +197,44 @@ export default {
             }
         }
     }
+@media (max-width:900px){
+    .postBloc{
+        
+        .post-header{
+
+            .header-left{
+                
+                width: 70%;
+ 
+                .publishedDate{
+                    font-size: 0.7em;
+                    font-weight: 300;
+                }
+            }
+        }
+    }      
+}
+@media (max-width: 400px){
+    .postBloc{
+        margin-top: 13px;
+        border: 2px solid #E57373;
+        border-radius: 13px;
+        font-size: 0.7em;
+
+        .post-header{
+
+            position: relative;
+            
+        }
+        .post-content{
+            margin: 10px 28px 0 10%;
+
+            .imgContenu{
+                width: 100%;
+                margin-top: 30px;
+            }
+        }
+    }
+    
+}
 </style>

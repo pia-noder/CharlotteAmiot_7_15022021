@@ -4,12 +4,10 @@ exports.getAllComments = async (req, res, next) =>{
     try {
         
         if(req.query.limit){
-            //console.log('pas au bon endroit')
             let response = await db.getOneOfAllComments(req.params.id, JSON.parse(req.query.limit));
             res.status(200).json(response)
             
         }else{
-            //console.log('requete au bon endroit')
             let response = await db.getAllComments(req.params.id);
             res.status(200).json(response);
         }

@@ -18,8 +18,9 @@ router.post('/login', controllerUsers.login);
 /*router.post('/login', (req, res) => {
     res.status(200).json({message :"Info du front envoyer jusqu au fichier router !"})
 })*/
-router.get('/:id', auth, controllerUsers.getAllPosts);
-router.put('/:id', auth, multer, controllerUsers.updateUser)
-router.delete('/:id', auth, controllerUsers.deleteUser)
+router.get('/:id/posts', auth, controllerUsers.getAllPosts);
+router.get('/:id', auth, controllerUsers.getOneUser);
+router.put('/:id', auth, multer, controllerUsers.updateUser);
+router.delete('/:id', auth, controllerUsers.deleteUser);
 
 module.exports = router;

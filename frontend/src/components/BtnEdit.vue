@@ -1,8 +1,13 @@
 <template>
   <div class="BtnEdit">
-    <span v-if=" isAdmin || isUser "  @click="toggleVisible" class="icon-dots"><font-awesome-icon  :icon="['fas', 'ellipsis-h']" /></span>
-    <DisplayOption v-if="isVisible"
-    @delete-post="deletePost(post.id_post || post.id)" />
+    <div class="dots">
+      <span v-if=" isAdmin || isUser "  @click="toggleVisible" class="icon-dots"><font-awesome-icon  :icon="['fas', 'ellipsis-h']" /></span>  
+    </div>
+    <div class="display-option-position">
+        <DisplayOption v-if="isVisible"
+        @delete-post="deletePost(post.id)" />
+    </div>
+    
 
   </div>
 </template>
@@ -36,14 +41,17 @@ export default {
         },
 
         async deletePost(id_post){
-            this.$store.dispatch('deletePost', id_post)
-            //await ServicePosts.deleteOnePost(id);
-            
+            console.log(id_post)
+            this.$store.dispatch('deletePost', id_post) 
         },
     },
 }
 </script>
 
-<style>
+<style lang="scss">
+.dots{
+    display: flex;
+    justify-content: flex-end;
+}
 
 </style>

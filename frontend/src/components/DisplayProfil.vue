@@ -1,25 +1,25 @@
 <template>
   <div class="userData">
-    <div class="profilImage">
+    <div class="profileImage">
     <button class="btnModalPost" @click="openUpdateProfile">
-        <img v-if="userData.imageURL" class="user-image" :src="userData.imageURL" alt="image du profil">
+        <img v-if="user[0].imageURL" :src="user[0].imageURL" alt="image du profil">
     </button>
     </div>
 
-    <div class="profilInfo">
-        <p>email : {{ userData.email }}</p>
-        <p>Poste: {{ userData.poste }}</p>
-        <p>Description: {{ userData.poste }}</p>
-        <p>Nom d'utilisateur: {{ userData.username }}</p>
+    <div class="profileInfo">
+        <p>email : {{ user[0].email }}</p>
+        <p>Poste: {{ user[0].poste }}</p>
+        <p>Description: {{ user[0].description }}</p>
+        <p>Nom d'utilisateur: {{ user[0].username }}</p>
     </div>
 
     <div id="updateProfile">      
-        <UpdatePofile class="updateProfile-content" ></UpdatePofile>
+        <UpdatePofile :user="user" @close-modal='closeModal' class="updateProfile-content" ></UpdatePofile>
     </div>
 
     <div class="deleteUser">
-        <button @click="deleteUser(userData.id)">
-          Supprimer compte
+        <button @click="deleteUser(user.id)" aria-label="Supprimer utilisateur" title="Supprimer l'utilisateur">
+          <font-awesome-icon class="icon fa-lg" icon="user-minus" />
         </button>  
     </div>
       
@@ -44,20 +44,22 @@ export default {
     components: {
         UpdatePofile,
     },
-
+    props:['user'],
     data () {
         return {
             userData: null,
         }
     },
-    async mounted () {
-       let user = JSON.parse(localStorage.getItem('userData'));
-       this.userData = user;
-    },
+ 
     methods: {
         openUpdateProfile () {
             var modal = document.getElementById("updateProfile");
            modal.style.display = "block";
+        },
+
+        closeModal(){
+            var modal = document.getElementById("updateProfile");
+            modal.style.display = "none";
         },
 
        async deleteUser(user_id){
@@ -67,7 +69,8 @@ export default {
                     name: 'LogIn',  
             });
 
-        }
+        },
+        
     },
 }
     
@@ -76,25 +79,29 @@ export default {
 <style lang="scss">
     .userData{
         display: flex;
-        width: 75%;
+        width: 50%;
         border: 2px solid black;
         border-radius: 13px;
+        margin: auto;
 
-        padding: 20px;
-        .profilImage{
+        padding: 10px;
+        .profileImage{
             width: 25%;
                 .btnModalPost{
                     background-color: white;
                     border: none;
+                    height: 100%;
                 }
                 img{
+                max-width: 150px;
                 width: 50%;
+                height: 50%;
                 text-align: center;
                 border-radius: 100%;
             }
         }
-
-        .profilInfo{
+    
+        .profileInfo{
             width: 75%;
 
             p{
@@ -123,6 +130,24 @@ export default {
                 width: 60%; /* Could be more or less, depending on screen size */
         }
     }
-       
+    .deleteUser{
+        button{
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            &:hover{
+                color: #d00000;
+            }
+        }
+    }   
     }
+@media (max-width: 900px){
+    .userData{
+        display: flex;
+        width: 80%;
+    }
+    .profileInfo{
+            width: 65%;
+        }
+}
 </style>
