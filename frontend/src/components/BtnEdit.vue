@@ -1,6 +1,6 @@
 <template>
   <div class="BtnEdit">
-    <div class="dots">
+    <div class="dots-bloc">
       <span v-if=" isAdmin || isUser "  @click="toggleVisible" class="icon-dots"><font-awesome-icon  :icon="['fas', 'ellipsis-h']" /></span>  
     </div>
     <div class="display-option-position">
@@ -41,7 +41,6 @@ export default {
         },
 
         async deletePost(id_post){
-            console.log(id_post)
             this.$store.dispatch('deletePost', id_post) 
         },
     },
@@ -49,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss">
-.dots{
+.dots-bloc{
     display: flex;
     justify-content: flex-end;
 }

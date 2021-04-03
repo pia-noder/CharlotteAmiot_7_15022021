@@ -39,7 +39,6 @@ export default {
         onSelectImage(event){
          
             this.user[0].imageURL = event.target.files[0];
-            console.log(event.target.files[0])
         },
 
         onSubmitProfile(){
@@ -48,9 +47,9 @@ export default {
             formData.append('poste', this.user[0].poste)
             formData.append('description', this.user[0].description)
             formData.append('multimedia', this.user[0].imageURL)
-            for(let fd of formData.entries()){
+            /*for(let fd of formData.entries()){
                 console.log(fd[0] + ' , ' + fd[1])
-            }
+            }*/
             const userId = this.$route.params.userId
             this.$store.dispatch('modifyUser', {userId, formData});
             

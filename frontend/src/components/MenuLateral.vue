@@ -1,9 +1,6 @@
 <template>
 
   <div class="menuLateral">
-      
-      
-      
       <button title="Publier Poste" class="btnModalPost" @click="openModal"><font-awesome-icon class="icon-trash" icon="pencil-alt" /></button>
       <div id="modal">
           <CreatePost @close-modal='closeModal' class="modal-content" ></CreatePost>
@@ -16,7 +13,6 @@
 
 window.onclick = function(event) {
 var modal = document.getElementById("modal");
-    console.log('click window')
   if (event.target == modal) {
     modal.style.display = "none";
   }

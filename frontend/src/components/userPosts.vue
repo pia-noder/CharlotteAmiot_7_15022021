@@ -68,8 +68,7 @@ export default {
         },
 
        async LikeStatus(post){
-            
-            console.log(this.userID)
+
                 const postInfosObj = {
                     "id_user" : this.userID
                 }

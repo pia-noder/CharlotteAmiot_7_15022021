@@ -1,38 +1,38 @@
 <template>
     
-        <div class="postBloc" >
-            <div class="post-header">
-                <div class="header-left">
-                    <img class="user-image" :src="post.imageURL" alt="photo de profile">
-                    <p>{{ post.username }}</p>
-                    <p class="publishedDate">{{ moment(post.date_publication).fromNow() }}</p>  
-                </div>
+    <div class="postBloc" >
+        <div class="post-header">
+            <div class="header-left">
+                <img class="user-image" :src="post.imageURL" alt="photo de profile">
+                <p>{{ post.username }}</p>
+                <p class="publishedDate">{{ moment(post.date_publication).fromNow() }}</p>  
+            </div>
                 
 
-                <BtnEdit
-                    :post="post"
-                    :isAdmin="userStatus == 'admin'"
-                    :isUser="userID == post.id_user"
-                 />
+            <BtnEdit
+                :post="post"
+                :isAdmin="userStatus == 'admin'"
+                :isUser="userID == post.id_user"
+            />
 
 
-            </div>
+        </div>
 
-            <div class="post-content">
-                {{ post.contenu }} <br/>
-                <img v-if="post.fileURL" class="imgContenu" :src="post.fileURL" alt="image envoyé par l'utilisateur">
-            </div>
+        <div class="post-content">
+            {{ post.contenu }} <br/>
+            <img v-if="post.fileURL" class="imgContenu" :src="post.fileURL" alt="image envoyé par l'utilisateur">
+        </div>
 
-            <div class="post-footer">
-                <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /></span>
-                <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
-            </div> 
-            <CommentsList v-if="this.commentsAreVisible" 
+        <div class="post-footer">
+            <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /></span>
+            <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
+        </div> 
+        <CommentsList v-if="this.commentsAreVisible" 
             :post="post" 
             :user="user"
-            />
+        />
             
-        </div>
+    </div>
 
 </template>
 

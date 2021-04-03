@@ -1,5 +1,4 @@
 const db = require('../db/postsDB');
-const db = require('../db/commentsDB');
 const fs = require('fs');
 
 
@@ -59,7 +58,7 @@ exports.deleteOnePost = async (req, res) => {
                     console.log(error)
                 }
                 db.deleteOnePost(req.body.id_post);
-                db.deleteAssociedComments(req.body.id_post)
+                
                 res.status(200).json({message: 'Post correctement supprimé'})
                 })
            } else {

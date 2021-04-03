@@ -40,3 +40,12 @@ exports.deleteOneComment = async (req, res, next) => {
         res.status(500).json({error});
     }
 }
+
+exports.deleteAssociedComments = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error});
+    }
+}
