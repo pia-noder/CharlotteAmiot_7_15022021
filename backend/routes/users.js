@@ -1,7 +1,6 @@
 const express = require ('express');
 const router = express.Router();
 
-//importation middleware
 //Importation des middlewares
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer')
@@ -14,10 +13,7 @@ const controllerUsers =  require ('../controllers/user');
 router.post('/signup', controllerUsers.signup);
 router.post('/login', controllerUsers.login);
 
-//Pour débugger
-/*router.post('/login', (req, res) => {
-    res.status(200).json({message :"Info du front envoyer jusqu au fichier router !"})
-})*/
+
 router.get('/:id/posts', auth, controllerUsers.getAllPosts);
 router.get('/:id', auth, controllerUsers.getOneUser);
 router.put('/:id', auth, multer, controllerUsers.updateUser);

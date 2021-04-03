@@ -30,7 +30,7 @@ exports.signup =  (req, res ) => {
         res.status(201).json(results);
     })
     .catch( error => {
-      console.log(error);
+      //console.log(error);
       res.status(400).json({message: 'problème d envoie vers db'});
     });
   } 
@@ -50,11 +50,9 @@ exports.login = async (req, res, next) =>{
       return res.status(400).json({message: "Rentrez un format d'email valide !"})
     } 
     let user = await db.loginUser(req.body.email);
-    console.log(user[0]);
     
       bcrypt.compare(req.body.password, user[0].password)
       .then( valid => {
-         console.log(valid)
         if(!valid){
           return res.status(400).json({message: 'mot de passe incorrect !'})
         }
@@ -79,13 +77,12 @@ exports.login = async (req, res, next) =>{
 
 exports.getAllPosts = async ( req, res ) => {
   try {
-    console.log(req.params.id);
     let results = await db.getAllPosts(req.params.id);
     
     res.status(200).json(results);
     
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.status(401).json({ error })
   }
 }
@@ -99,7 +96,6 @@ exports.getOneUser = async (req, res) => {
 }
 
 exports.updateUser = async (req, res ) => {
-  console.log(req.body.multimedia, req.file)
 
     const imageURL = req.file ? `${req.protocol}://${req.get('host')}/multimedia/${req.file.filename}` : req.body.multimedia;
 
@@ -117,7 +113,7 @@ exports.deleteUser = async (req, res) => {
     await db.deleteUser(req.params.id);
     res.status(200).json({message: 'utilisateur supprimé !'})
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.status(401).json({ error })
   }
 }

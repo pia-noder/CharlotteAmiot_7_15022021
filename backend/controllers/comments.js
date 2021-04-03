@@ -14,7 +14,7 @@ exports.getAllComments = async (req, res, next) =>{
         
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({error});
     }
 },
@@ -26,7 +26,7 @@ exports.createComment = async (req, res, next) => {
         let comment = await db.findLastComment(); 
         res.status(201).json(comment);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({error});
     }
 },
@@ -36,7 +36,7 @@ exports.deleteOneComment = async (req, res, next) => {
         await db.deleteOneComment(req.params.id);
         res.status(200).json({message: 'Commentaire correctement supprimé !'})
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({error});
     }
 }
@@ -45,7 +45,7 @@ exports.deleteAssociedComments = async (req, res) => {
     try {
         
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({error});
     }
 }

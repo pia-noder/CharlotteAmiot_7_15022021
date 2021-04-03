@@ -1,4 +1,5 @@
 const db = require('../db/postsDB');
+const dbComments = require('../db/commentsDB');
 const fs = require('fs');
 
 
@@ -17,7 +18,7 @@ exports.getOnePost = async ( req,res ) => {
         let results = await db.getOnePost(req.params.id);
         res.status(200).json(results);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({error});
     }
 };
@@ -30,7 +31,7 @@ exports.createPost = async (req, res) => {
         let post = await db.findLastPost();
         res.status(201).json(post);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({ error })
     }
 }
@@ -39,18 +40,13 @@ exports.createPost = async (req, res) => {
 
 exports.deleteOnePost = async (req, res) => {
     try {
-        console.log('nous sommes au niveau du controller')
-        console.log(req.body)
        await db.getfileURL(req.body.id_post)
        .then(file => {
            
             file = JSON.stringify(file);
             fileLisible = JSON.parse(file);
-            console.log(fileLisible[0].fileURL)
 
            if(fileLisible[0].fileURL){
-               
-                console.log(fileLisible[0].fileURL, 'fileLisible');
 
                 const filename = fileLisible[0].fileURL.split('/multimedia/')[1];
                 fs.unlink(`multimedia/${filename}`, error => {
@@ -58,6 +54,7 @@ exports.deleteOnePost = async (req, res) => {
                     console.log(error)
                 }
                 db.deleteOnePost(req.body.id_post);
+                dbComments.deleteAssociatedComments(req.body.id_post);
                 
                 res.status(200).json({message: 'Post correctement supprimé'})
                 })
@@ -83,7 +80,7 @@ exports.likeOnePost = async(req, res ) => {
     await db.likeOnePost(req.params.id, req.body.likes, req.body.id_user);
         res.status(200).json({message: 'Modication du like correctement effectué'})
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({ error })
     }
 }
@@ -94,7 +91,7 @@ exports.dislikeOnePost = async(req, res ) => {
 
         res.status(200).json({message: 'Suppression like correctement effectué'})
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({ error })
     }
 }
@@ -104,7 +101,7 @@ exports.likesStatusInfo = async (req, res) => {
         const results = await db.likesStatusInfo(req.params.id, req.body.id_user);
         res.status(200).send(results)
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(500).json({ error })
     }
 }

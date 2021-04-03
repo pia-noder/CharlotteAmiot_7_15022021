@@ -34,10 +34,10 @@ groupomaniadb.loginUser = (email) => {
     return new Promise ((resolve, reject) => {
         pool.query(`SELECT * FROM users WHERE email= ? `, [email] , (error, results) => {
             if(error){
-                console.log('DB Post pas OK !');
+                
                 return reject(error);
             }
-                 console.log('DB Post OK !')
+                
                 return resolve(results);
         })
     })
@@ -47,10 +47,10 @@ groupomaniadb.getAllPosts  = (id) => {
     return new Promise ((resolve, reject) => {
         pool.query(`SELECT * FROM Posts WHERE id_user = ?`, [ id ] , (error, results) => {
             if(error){
-                console.log('DB Post pas OK !');
+                
                 return reject(error);
             }
-                console.log('DB Post OK !')
+                
                 return resolve(results);
         })
     })
@@ -60,10 +60,10 @@ groupomaniadb.updateUser = (userId, username, poste, description, imageURL) => {
     return new Promise ((resolve, reject) => {
         pool.query(`UPDATE users SET username = ?, poste = ? , description = ?, imageURL = ?  WHERE id= ?;`, [username, poste, description, imageURL, userId, userId], (error, results) => {
             if(error) {
-                console.log('connexion DB pas OK !');
+                
                 return reject(error);
             }
-                console.log('connexion DB OK !')
+                
                 return resolve(results);
         });
     });
@@ -73,25 +73,22 @@ groupomaniadb.getOneUser = (userId) => {
     return new Promise((resolve, reject) => {
         pool.query(`SELECT * FROM Users WHERE id = ?`, [userId], (error, results) => {
             if(error) {
-                console.log('connexion DB pas OK !');
+                
                 return reject(error);
             }
-                console.log('connexion DB OK !')
+                
                 return resolve(results);
         });
     });
 }
 
 groupomaniadb.deleteUser = (user_id) => {
-    console.log('dans la BDD')
-    console.log(user_id);
     return new Promise ((resolve, reject) => {
         pool.query(`DELETE FROM users WHERE id = ?`, [user_id], (error, results) => {
             if(error) {
-                console.log('connexion DB pas OK !');
+                
                 return reject(error);
             }
-                console.log('connexion DB OK !')
                 return resolve(results);
         });
     });
