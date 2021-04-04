@@ -13,7 +13,7 @@
 
     <button
       v-if="count > 1 && !allCommentsDisplayed"
-      @click="getAllComments(post.id)"
+      @click="getAllComments(post)"
     >
 
       <span v-if="count > 1">Afficher {{ count - 1 }} autres commentaires</span>
@@ -47,7 +47,7 @@ name: 'CommentsList',
   props:['post', 'user'],
 
   created() {
-        this.getOneOfAllComments(this.post.id);
+        this.getOneOfAllComments(this.post);
       },
 
   data () {
@@ -63,6 +63,7 @@ name: 'CommentsList',
   methods:{
 
     getOneOfAllComments(post) {
+      console.log(post)
       const getFistComment = ServiceComments.getOneOfAllComments(post);
 
       getFistComment.then((response) => {

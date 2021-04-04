@@ -10,6 +10,7 @@ export default {
     },
     
     createComment(post_id, data) {
+        console.log(post_id)
         return API().post('posts/' + post_id + '/comments', data)
     },
 

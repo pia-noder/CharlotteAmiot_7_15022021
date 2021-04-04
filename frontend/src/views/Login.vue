@@ -17,7 +17,7 @@
             <input v-model="password" type="password" placeholder="mot de passe" @blur="$v.password.$touch()">
             <div v-if="$v.password.$error">
                 <p class="errorDisplay" v-if="!$v.password.required">Remplir le champ</p>
-                <p class="errorDisplay" v-if="!$v.password.minLength || !$v.password.maxLength"> Rentrer un mot de passe complexe entre 8 et 50 caractères</p>
+                <p class="errorDisplay" v-if="!$v.password.minLength || !$v.password.maxLength"> Rentrer votre mot de passe </p>
             </div>
             
             <a href="#">Mot de passe oublié ?</a>

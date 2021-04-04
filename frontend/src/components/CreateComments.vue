@@ -96,7 +96,7 @@ export default {
           formData.append('userId', userId);
           formData.append('multimedia', this.fileURL);
 
-          ServiceComments.createComment(post.id, formData)
+          ServiceComments.createComment(post, formData)
           .then(newComment => {
             let newCommentString = JSON.stringify(newComment);
             newComment = JSON.parse(newCommentString);
