@@ -13,6 +13,7 @@
 
 window.onclick = function(event) {
 var modal = document.getElementById("modal");
+    console.log('click')
   if (event.target == modal) {
     modal.style.display = "none";
   }

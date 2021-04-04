@@ -13,7 +13,6 @@
             <div id="previewFile">
                 <img v-if="showImage" id="imagePreview" class="image-preview" src="" alt="pré-visualisation du fichier" />
             </div>
-            <p v-if="message" class="">{{message}}</p>
             <div class="footer">
                 <button
                     aria-label="Intégrer un fichier"
@@ -61,7 +60,6 @@ export default {
                 fileURL: null,
             
             },
-            message: '',
             showImage: false
         }
     },
@@ -106,7 +104,7 @@ export default {
                     console.log(fd[0] + ' , ' + fd[1])
                 }*/
                 if(formData)
-                try {
+    
                     this.$store.dispatch('createPosts', formData)
                     this.$emit('close-modal');
                     this.postData.contenu = '';
@@ -114,12 +112,6 @@ export default {
                     let imagePreview = document.getElementById('imagePreview'); 
                     imagePreview.setAttribute("src", '');
                     this.showImage = false;
-                   
-                    
-                } catch (error) {
-                    console.log(error);
-                    this.message = 'Il y a un problème avec formData'
-                }
             } else {
                 alert('Veuillez rentrer des informations avant de publier un poste');
                

@@ -10,7 +10,6 @@ export default {
     },
 
     modifyUser(userId, datas) {
-        console.log(datas)
         return API().put('auth/' + userId, datas )
     },
 
@@ -18,7 +17,6 @@ export default {
         return API().get('auth/' + userId);
     },
     deleteUser(userId){
-        console.log(userId)
         return API().delete('auth/' + userId);
     },
 };

@@ -4,7 +4,7 @@
         <div class="post-header">
             <img v-if="user[0].imageURL" class="user-image" :src="user[0].imageURL" alt="photo de profile">
             <p>{{ post.username }}</p>
-            <p class="publishedDate">{{ post.date_publication }}</p>
+            <p class="publishedDate">{{ moment(post.date_publication).fromNow() }}</p>
             <BtnEdit
                 :post="post"
                 :isAdmin="userStatus == 'Admin'"
@@ -134,7 +134,6 @@ export default {
             justify-content: space-between;
             min-height: 20px;
             margin: 19px 30px 0 19px;
-            position: relative;
 
             .user-image{
                 width: 40px;
@@ -182,7 +181,6 @@ export default {
             justify-content: space-between;
             min-height: 20px;
             margin: 19px 30px 0 19px;
-            position: relative;
 
             .user-image{
                 width: 20px;

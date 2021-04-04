@@ -18,7 +18,7 @@
     </div>
 
     <div class="deleteUser">
-        <button @click="deleteUser(user.id)" aria-label="Supprimer utilisateur" title="Supprimer l'utilisateur">
+        <button @click="deleteUser(user[0].id)" aria-label="Supprimer utilisateur" title="Supprimer l'utilisateur">
           <font-awesome-icon class="icon fa-lg" icon="user-minus" />
         </button>  
     </div>
@@ -30,6 +30,7 @@
 <script>
 window.onclick = function(event) {
 var modal = document.getElementById("updateProfile");
+    console.log('click')
   if (event.target == modal) {
     modal.style.display = "none";
   }
@@ -63,6 +64,7 @@ export default {
         },
 
        async deleteUser(user_id){
+           console.log(user_id)
             await ServiceAuth.deleteUser(user_id);
             localStorage.clear();
             this.$router.push({
