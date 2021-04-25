@@ -1,4 +1,5 @@
 const db = require('../db/commentsDB');
+const fs = require('fs');
 
 exports.getAllComments = async (req, res, next) =>{
     try {
@@ -33,8 +34,35 @@ exports.createComment = async (req, res, next) => {
 
 exports.deleteOneComment = async (req, res, next) => {
     try {
-        await db.deleteOneComment(req.params.id);
-        res.status(200).json({message: 'Commentaire correctement supprimé !'})
+        //Récupérer les infos du commentaire à partir de son ID
+        await db.getfileURL(req.params.id)
+        .then(file => {
+            file = JSON.stringify(file);
+            fileLisible = JSON.parse(file);
+            
+            //Si il y un fichier media le supprimer du dossier multimedia sinon passer directement à la suppression du commentaire dans la BDD
+            if(fileLisible[0].fileURL){
+                
+                const filename = fileLisible[0].fileURL.split('/multimedia/')[1];
+                console.log(filename)
+                //Suppression du fichier du dossier multimedia
+                fs.unlink(`multimedia/${filename}`, error => {
+
+                if(error){ console.log(error) }
+
+                db.deleteOneComment(req.params.id);
+                res.status(200).json({message: 'Post correctement supprimé'})
+                })
+
+            }else{
+                db.deleteOneComment(req.params.id);
+                res.status(200).json({message: 'Post correctement supprimé'})
+                }
+
+            })
+
+        .catch(error => { res.status(401).json({error})})
+
     } catch (error) {
         //console.log(error);
         res.status(500).json({error});

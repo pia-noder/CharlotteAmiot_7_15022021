@@ -47,6 +47,7 @@ export default {
     await  this.$store.dispatch('loadPosts');
     await  this.$store.dispatch('loadUser', this.$route.params.userId );
     },
+
   computed: {
         posts() {
             return this.$store.state.posts;
@@ -55,6 +56,7 @@ export default {
       return this.$store.state.user;
       }
     },  
+    
   data(){
     return{
       userId: this.$route.params.userId,
@@ -98,7 +100,7 @@ export default {
 @media (max-width:900px){
  .main{
       .publication {
-
+          margin-top: 18vh;
         .bloc-post {
           margin: auto;
           width: 85%;

@@ -58,6 +58,7 @@ export default {
 
     .blocProfil {
       width: 100%;
+      margin-top: 5vh;
 
       .loop{
         margin-top: 30px;

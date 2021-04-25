@@ -71,7 +71,7 @@ const router = new Router({
 router.beforeEach( (to, from, next) => {
   if(to.meta.requiresAuth){
 
-    if(!localStorage.getItem('userToken') || !localStorage.getItem('userToken')){
+    if(!localStorage.getItem('userToken') || !localStorage.getItem('userID')){
       next({
         name: "LogIn"
       })

@@ -84,7 +84,7 @@ groupomaniadb.getOneUser = (userId) => {
 
 groupomaniadb.deleteUser = (user_id) => {
     return new Promise ((resolve, reject) => {
-        pool.query(`DELETE FROM users WHERE id = ?`, [user_id], (error, results) => {
+        pool.query(`START TRANSACTION; DELETE FROM users WHERE id = ?`, [user_id], (error, results) => {
             if(error) {
                 
                 return reject(error);

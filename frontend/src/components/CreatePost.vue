@@ -2,7 +2,7 @@
   <div class="createPost">
 
     <div class="blocImg">
-        <img class="user-image" :src="user[0].imageURL" alt="icon du profile"> 
+        <img class="user-image" v-if="user[0].imageURL" :src="user[0].imageURL" alt="icon du profile"> 
     </div>
 
     <div class="bloc-create">
@@ -49,7 +49,7 @@
 export default {
     nom: 'CreatePost',
     async beforeCreate() {
-        this.$store.dispatch('loadUser', this.$route.params.userId );
+        await this.$store.dispatch('loadUser', this.$route.params.userId );
     },
 
     data () {
@@ -63,6 +63,7 @@ export default {
             showImage: false
         }
     },
+    
     computed: {
         user() {
           return this.$store.state.user;

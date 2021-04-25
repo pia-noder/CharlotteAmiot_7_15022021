@@ -40,8 +40,8 @@ groupomaniadb.findLastComment = () => {
     });
 }
 groupomaniadb.getOneOfAllComments = (post_id, limit) => {
-    
         return new Promise ((resolve, reject) => {
+            
             pool.query(`SELECT Comments.id AS comments_id, Comments.contenu, Comments.date_publication,Comments.user_id AS comments_user, Comments.fileURL, Users.username AS user_name, Users.imageURL FROM Comments LEFT JOIN Users ON Comments.user_id = Users.id WHERE Comments.post_id = ? LIMIT ? ; SELECT COUNT(*) AS count FROM Comments WHERE post_id = ?`, [post_id, limit, post_id] ,(error, results) => {
                 if(error){   
                     return reject(error);
@@ -65,6 +65,17 @@ groupomaniadb.createComment = (content, user_id, fileURL, post_id ) => {
     });
 };
 
+groupomaniadb.getfileURL = (id) => {
+    return new Promise ((resolve, reject) => {
+        pool.query(`SELECT fileURL FROM Comments WHERE id = ?`, [id], (error, results) => {
+            if(error) {
+                return reject(error);
+            }
+                return resolve(results);
+        })
+    })
+};
+
 groupomaniadb.deleteOneComment = (comment_id ) => {
     return new Promise ((resolve, reject) => {
         pool.query(`DELETE FROM Comments WHERE id = ?`, [comment_id] ,(error, results) => {
@@ -78,15 +89,4 @@ groupomaniadb.deleteOneComment = (comment_id ) => {
     });
 };
 
-groupomaniadb.deleteAssociatedComments = (post_id) => {
-    return new Promise ((resolve, reject) => {
-        pool.query(`DELETE FROM Comments WHERE post_id = ?` , [post_id], (error, results) => {
-            if(error){
-                return reject(error);
-
-            }
-                return resolve(results);
-        })
-    })
-}
 module.exports = groupomaniadb;

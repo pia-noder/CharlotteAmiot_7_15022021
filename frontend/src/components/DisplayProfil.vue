@@ -1,7 +1,7 @@
 <template>
   <div class="userData">
     <div class="profileImage">
-    <button class="btnModalPost" @click="openUpdateProfile">
+    <button class="btnModalProfile" @click="openUpdateProfile">
         <img v-if="user[0].imageURL" :src="user[0].imageURL" alt="image du profil">
     </button>
     </div>
@@ -29,10 +29,9 @@
 
 <script>
 window.onclick = function(event) {
-var modal = document.getElementById("updateProfile");
-    console.log('click')
-  if (event.target == modal) {
-    modal.style.display = "none";
+let modalUpdateProfile = document.getElementById("updateProfile");
+  if (event.target == modalUpdateProfile ) {
+    modalUpdateProfile .style.display = "none";
   }
 }
 import ServiceAuth from '@/service/ServiceAuthentification'
@@ -54,22 +53,25 @@ export default {
  
     methods: {
         openUpdateProfile () {
-            var modal = document.getElementById("updateProfile");
-           modal.style.display = "block";
+            var modalUpdateProfile = document.getElementById("updateProfile");
+           modalUpdateProfile.style.display = "block";
         },
 
         closeModal(){
-            var modal = document.getElementById("updateProfile");
-            modal.style.display = "none";
+            var modalUpdateProfile  = document.getElementById("updateProfile");
+            modalUpdateProfile .style.display = "none";
         },
 
        async deleteUser(user_id){
-           console.log(user_id)
-            await ServiceAuth.deleteUser(user_id);
-            localStorage.clear();
-            this.$router.push({
+           if( confirm('Etes-vous sûre de vouloir supprimer ce compte ?')){
+               await ServiceAuth.deleteUser(user_id);
+                localStorage.clear();
+                this.$router.push({
                     name: 'LogIn',  
-            });
+                }); 
+           }
+          
+           
 
         },
         
@@ -89,7 +91,7 @@ export default {
         padding: 10px;
         .profileImage{
             width: 25%;
-                .btnModalPost{
+                .btnModalProfile{
                     background-color: white;
                     border: none;
                     height: 100%;

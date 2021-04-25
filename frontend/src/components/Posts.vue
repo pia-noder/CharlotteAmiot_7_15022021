@@ -27,6 +27,7 @@
             <span class="icon-comment"><font-awesome-icon @click="displayComments(post)" :icon="['fas', 'comment-dots']" /></span>
             <span class="icon-heart" :class="[isLiked ? 'changeColor' : '']" @click="onLikePost()"><font-awesome-icon  icon="heart" /><p v-if="post.likes">{{post.likes}}</p></span>
         </div> 
+        
         <CommentsList v-if="this.commentsAreVisible" 
             :post="post.id" 
             :user="user"

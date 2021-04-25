@@ -3,22 +3,14 @@
   <div class="menuLateral">
       <button title="Publier Poste" class="btnModalPost" @click="openModal"><font-awesome-icon class="icon-trash" icon="pencil-alt" /></button>
       <div id="modal">
-          <CreatePost @close-modal='closeModal' class="modal-content" ></CreatePost>
+          <CreatePost  class="modal-content" ></CreatePost>
+          <button class="btnCloseModalPost" @click="closeModal">X Fermer</button>
       </div>
   </div>
 
 </template>
 
 <script>
-
-window.onclick = function(event) {
-var modal = document.getElementById("modal");
-    console.log('click')
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
 
 import CreatePost from '@/components/CreatePost.vue'
 export default {
@@ -86,6 +78,14 @@ export default {
                 border: 1px solid #888;
                 width: 80%; /* Could be more or less, depending on screen size */
         }
+    }
+    .btnCloseModalPost{
+        border: none;
+        border-radius: 13px;
+        background-color: red;
+        color: white;
+        padding: 10px;
+        margin-left: 50vw;
     }
 }
 

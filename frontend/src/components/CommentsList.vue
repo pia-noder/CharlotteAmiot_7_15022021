@@ -63,7 +63,6 @@ name: 'CommentsList',
   methods:{
 
     getOneOfAllComments(post) {
-      console.log(post)
       const getFistComment = ServiceComments.getOneOfAllComments(post);
 
       getFistComment.then((response) => {
