@@ -1,7 +1,7 @@
 # Creation of a social network
 
 ## Deployed web site 
-[Groupomania](gifted-jackson-1ff2db.netlify.app)
+[Groupomania](https://gifted-jackson-1ff2db.netlify.app/)
 
 ## Getting started
 Clone this repository : 
