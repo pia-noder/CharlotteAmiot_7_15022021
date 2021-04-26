@@ -98,7 +98,6 @@ export default {
                 
             })
             .catch(error => {
-                console.log(error)
                 this.messageErreur = 'Adresse e-mail ou mot de passe incorrect.'
             })
       

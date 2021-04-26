@@ -87,11 +87,9 @@ export default new Vuex.Store({
     },
 
     deletePost ({ commit }, id_post) {
-      console.log(id_post)
       ServicePosts.deleteOnePost(id_post)
         .then(() => commit('DELETE_POST', id_post))
         .catch(error => {
-          console.log({ error: error })
           commit('ERROR_MESSAGE', 'Problème de connexion')
         })
     },

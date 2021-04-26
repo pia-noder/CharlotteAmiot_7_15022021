@@ -86,7 +86,6 @@ export default {
 
     methods: {
        async onSubmitRegisterForm () {
-            console.log('Envoie du formulaire signIn correctement déclenché');
             await ServiceAuth.signup({
                 username: this.username,
                 email: this.email,
