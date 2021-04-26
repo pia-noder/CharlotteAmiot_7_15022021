@@ -42,7 +42,6 @@ exports.signup =  (req, res ) => {
 
 
 exports.login = async (req, res, next) =>{
-  
   try {
     const regExpEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
