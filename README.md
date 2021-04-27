@@ -28,9 +28,9 @@ Be sure you have MySQL installed globally
 
 ## Stack
 
-..* For the server : Node.js and Express.js
-..* For the database : MySQL  and mysql npm package
-..* For the client : Vue.js (Vue Router, Vuex), Sass, Vuelidate
+  * For the server : Node.js and Express.js
+  * For the database : MySQL  and mysql npm package
+  * For the client : Vue.js (Vue Router, Vuex), Sass, Vuelidate
 
 ## API Documentation
 
@@ -39,4 +39,10 @@ Be sure you have MySQL installed globally
 
 I have created a corporate social network, for a fictive company. For this project, I developped below features :
 
-..*
+  * Create and delete an user account easily
+  * Create publications with or without pictures
+  * Be able to add more information about the user
+  * Be able to add comments
+  * Admin profile
+
+
