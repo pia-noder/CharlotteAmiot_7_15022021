@@ -2,7 +2,7 @@
   <div class="createPost">
 
     <div class="blocImg">
-        <img class="user-image" v-if="user[0].imageURL" :src="user[0].imageURL" alt="icon du profile"> 
+        <img class="user-image" v-if="user.length > 0" :src="user[0].imageURL" alt="icon du profile"> 
     </div>
 
     <div class="bloc-create">
@@ -48,8 +48,15 @@
 
 export default {
     nom: 'CreatePost',
+    
     async beforeCreate() {
         await this.$store.dispatch('loadUser', this.$route.params.userId );
+    },
+    
+    computed: {
+        user() {
+          return this.$store.state.user;
+        }
     },
 
     data () {
@@ -64,11 +71,7 @@ export default {
         }
     },
     
-    computed: {
-        user() {
-          return this.$store.state.user;
-        }
-    },
+    
 
     methods: {
         onSelectFile (event) {

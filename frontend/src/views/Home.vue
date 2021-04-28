@@ -50,11 +50,11 @@ export default {
 
   computed: {
         posts() {
-            return this.$store.state.posts;
+          return this.$store.state.posts;
         },
         user(){
-      return this.$store.state.user;
-      }
+          return this.$store.state.user;
+        }
     },  
     
   data(){

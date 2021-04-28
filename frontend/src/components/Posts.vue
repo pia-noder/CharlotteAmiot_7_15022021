@@ -3,7 +3,7 @@
     <div class="postBloc" >
         <div class="post-header">
             <div class="header-left">
-                <img class="user-image" :src="post.imageURL" alt="photo de profile">
+                <img class="user-image"  :src="post.imageURL" alt="photo de profile">
                 <p>{{ post.username }}</p>
                 <p class="publishedDate">{{ moment(post.date_publication).fromNow() }}</p>  
             </div>
@@ -60,7 +60,7 @@ export default {
             isLiked: false,
         }
     },
-    created (){
+    async created (){
         this.LikeStatus(this.post);     
     },
 

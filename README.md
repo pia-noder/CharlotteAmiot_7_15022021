@@ -23,8 +23,8 @@ Clone this repository :
 ### Database
 
 Be sure you have MySQL installed globally
-    Create tables from the file groupomania_db.txt 
-    From .env.example create a .env file with your database's informations
+   * Create tables from the file groupomania_db.txt 
+   * From .env.example create a .env file with your database's informations
 
 ## Stack
 
